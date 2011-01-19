@@ -27,13 +27,15 @@
     this.canvas  = this.$canvas[0]
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 1000; //mm
+    this.final_width = 550; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
+    this.getBrickColor = this.getBrickColorSample5;
     
     this.colorDistance = this.colorDistanceComplex;
     //this.colorDistance = this.colorDistanceBasic;
+    //this.colorDistance = this.colorDistanceHSL;
   }
 
   _.extend(Brickifier.prototype, {
@@ -123,6 +125,41 @@
       return color;
     },
     
+    getBrickColorSample5: function(x, y){
+      var data = this.ctx.getImageData(
+        x * this.brick_width,
+        y * this.brick_height,
+        this.brick_width,
+        this.brick_height
+      );
+      
+      var offsets = [
+        0,                                  //first pixel
+        this.bricks_x - 4,                  //last pixel first row
+        data.data.length - 4,               //last pixel
+        data.data.length - this.bricks_x * 4,//first pixel last row
+        Math.floor(data.data.length / 8)    // middle(ish) pixel
+      ]
+      
+      var freq = {}
+      
+      for(var i=0; i < offsets.length; i++){
+        var offset = offsets[i];
+        var c = this.nearestColor(Array.prototype.slice.call(data.data ,offset, offset+3)).toString();
+        c in freq ? freq[c] += 1 : freq[c]=1;
+      }
+      
+      var key, most, min = 0;
+      for(key in freq){
+        if(freq[key] > min){
+          most = key;
+          min = freq[key];
+        }
+      }
+      
+      return most.split(',');
+    },
+    
     generateColorGrid: function(){
       this.colorGrid = []
       
@@ -193,11 +230,20 @@
     },
     
     colorDistanceHSL: function(color, base){
+      var h_weight = 1, 
+          s_weight = 1,
+          l_weight = 0.1,
+          d = 0;
+      
+      
       color = rgbToHsl.apply(null, color),
       base = rgbToHsl.apply(null, base);
 
+      d += Math.abs(color[0] - base[0]) * h_weight;
+      d += Math.abs(color[1] - base[1]) * s_weight;
+      d += Math.abs(color[2] - base[2]) * l_weight;
       
-      
+      return d;
     }
   })
   
