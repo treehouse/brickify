@@ -8,19 +8,18 @@
 %hr
 %canvas#canvas5{:width=>"800", :height => '600'}
 %div{:id => "palette"}
-%img{:src => "/proxy?url=http://www.google.com/images/logos/ps_logo2.png"}
 
 :javascript
   $(function(){
-		for(var i = 0,j = colors.length; i < j; i++) {
-			$('#palette').append("<div class=\"color\"></div>");
-			$('#palette div.color:last').css('backgroundColor', "rgb(" + colors[i][0] + ", " + colors[i][1] + ", " + 
-					colors[i][2] + ")");
-		}
-	
-		$('#palette div.color').live('click', function(event) {
-			alert($(event.target).css('backgroundColor'));
-		});
+    for(var i = 0,j = colors.length; i < j; i++) {
+      $('#palette').append("<div class=\"color\"></div>");
+      $('#palette div.color:last').css('backgroundColor', "rgb(" + colors[i][0] + ", " + colors[i][1] + ", " + 
+          colors[i][2] + ")");
+    }
+  
+    $('#palette div.color').live('click', function(event) {
+      alert($(event.target).css('backgroundColor'));
+    });
 
     b = new Brickifier('#canvas1');
     b.initialize('/images/carsonified.png');
