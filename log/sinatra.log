@@ -448,3 +448,141 @@ SyntaxError: compile error
 127.0.0.1 - - [18/Jan/2011 21:41:12] "GET / HTTP/1.1" 200 660 0.2389
 127.0.0.1 - - [18/Jan/2011 21:41:12] "GET /css/main.css HTTP/1.1" 200 - 0.1068
 127.0.0.1 - - [18/Jan/2011 21:41:12] "GET /css/main.css HTTP/1.1" 200 - 0.1123
+127.0.0.1 - - [18/Jan/2011 22:25:08] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.1749
+127.0.0.1 - - [18/Jan/2011 22:25:08] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.1789
+NoMethodError - undefined method `headers' for #<Net::HTTPOK 200 OK readbody=true>:
+ ./server.rb:24:in `GET /proxy'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1057:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1057:in `compile!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:643:in `instance_eval'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:643:in `route_eval'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:627:in `route!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:675:in `process_route'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:672:in `catch'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:672:in `process_route'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:626:in `route!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:625:in `each'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:625:in `route!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:760:in `dispatch!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:553:in `call!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `instance_eval'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `invoke'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `catch'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `invoke'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:553:in `call!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:538:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1167:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1193:in `synchronize'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1167:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/lint.rb:48:in `_call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/lint.rb:36:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:86:in `proceed_as_child'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:31:in `call!'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:18:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/favicon.rb:12:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/static.rb:14:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/builder.rb:77:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/chunked.rb:15:in `call'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:67:in `process'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:38:in `run'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/bin/shotgun:156
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/bin/shotgun:19:in `load'
+ /Users/alan/.rvm/gems/ree-1.8.7-2010.02/bin/shotgun:19
+NoMethodError: undefined method `headers' for #<Net::HTTPOK 200 OK readbody=true>
+	./server.rb:24:in `GET /proxy'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1057:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1057:in `compile!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:643:in `instance_eval'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:643:in `route_eval'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:627:in `route!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:675:in `process_route'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:672:in `catch'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:672:in `process_route'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:626:in `route!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:625:in `each'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:625:in `route!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:760:in `dispatch!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:553:in `call!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `instance_eval'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `invoke'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `catch'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:725:in `invoke'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:553:in `call!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:538:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1167:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1193:in `synchronize'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/sinatra-1.1.2/lib/sinatra/base.rb:1167:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/lint.rb:48:in `_call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/lint.rb:36:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:86:in `proceed_as_child'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:31:in `call!'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/loader.rb:18:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/favicon.rb:12:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/lib/shotgun/static.rb:14:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/builder.rb:77:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/chunked.rb:15:in `call'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:67:in `process'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:38:in `run'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/gems/shotgun-0.8/bin/shotgun:156
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/bin/shotgun:19:in `load'
+	/Users/alan/.rvm/gems/ree-1.8.7-2010.02/bin/shotgun:19
+127.0.0.1 - - [18/Jan/2011 22:29:25] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 500 146569 0.2646
+127.0.0.1 - - [18/Jan/2011 22:29:25] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 500 146569 0.2684
+127.0.0.1 - - [18/Jan/2011 22:29:26] "GET /__sinatra__/500.png HTTP/1.1" 200 31056 0.0017
+127.0.0.1 - - [18/Jan/2011 22:29:26] "GET /__sinatra__/500.png HTTP/1.1" 200 31056 0.0075
+127.0.0.1 - - [18/Jan/2011 22:29:52] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0639
+127.0.0.1 - - [18/Jan/2011 22:29:52] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0677
+127.0.0.1 - - [18/Jan/2011 22:30:13] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0644
+127.0.0.1 - - [18/Jan/2011 22:30:13] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0683
+127.0.0.1 - - [18/Jan/2011 22:30:18] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0612
+127.0.0.1 - - [18/Jan/2011 22:30:18] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0651
+127.0.0.1 - - [18/Jan/2011 22:30:23] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0599
+127.0.0.1 - - [18/Jan/2011 22:30:23] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0646
+127.0.0.1 - - [18/Jan/2011 22:30:39] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0665
+127.0.0.1 - - [18/Jan/2011 22:30:39] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.0704
+127.0.0.1 - - [18/Jan/2011 22:30:50] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.6723
+127.0.0.1 - - [18/Jan/2011 22:30:50] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.6763
+127.0.0.1 - - [18/Jan/2011 22:30:50] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.1632
+127.0.0.1 - - [18/Jan/2011 22:30:50] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.1676
+127.0.0.1 - - [18/Jan/2011 22:30:51] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.4279
+127.0.0.1 - - [18/Jan/2011 22:30:51] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.4319
+127.0.0.1 - - [18/Jan/2011 22:30:54] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.1890
+127.0.0.1 - - [18/Jan/2011 22:30:54] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 - 0.1930
+127.0.0.1 - - [18/Jan/2011 22:31:25] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.1708
+127.0.0.1 - - [18/Jan/2011 22:31:25] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.1751
+127.0.0.1 - - [18/Jan/2011 22:31:26] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.8183
+127.0.0.1 - - [18/Jan/2011 22:31:26] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.8240
+127.0.0.1 - - [18/Jan/2011 22:31:28] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.7725
+127.0.0.1 - - [18/Jan/2011 22:31:28] "GET /proxy?url=http://www.google.com/images/logos/ps_logo2.png HTTP/1.1" 200 26209 0.7767
