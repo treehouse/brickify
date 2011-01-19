@@ -285,6 +285,10 @@
 
 
 $(function(){
+	for(var i = 0,j = colors.length; i < j; i++) {
+		var box = $('#boxes').append("<span></span>")
+	}
+	
   b = new Brickifier('#canvas1');
   b.initialize('/images/carsonified.png');
   
