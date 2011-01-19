@@ -7,21 +7,21 @@
   BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
   
   namedColors = {
-    "White": [255, 255 ,255],
-    "Red": [188,6,2],
-    "Blue": [36,98,175], 
-    "Yellow": [243,194,3], 
-    "Dark Gray": [50,50,50], 
-    "Green": [45,160,85], 
-    "Brown": [176,160,109], 
-    "Copper": [213,127,40], 
+    "White":      [255, 255 ,255],
+    "Red":        [188,6,2],
+    "Blue":       [36,98,175], 
+    "Yellow":     [243,194,3], 
+    "Dark Gray":  [50,50,50], 
+    "Green":      [45,160,85], 
+    "Brown":      [176,160,109], 
+    "Copper":     [213,127,40], 
     "Light Blue": [116,149,200], 
-    "Gray": [101,101,101],
-    "Brown": [84,42,20], 
+    "Gray":       [101,101,101],
+    "Brown":      [84,42,20], 
     "Light Gray": [146,146,146], 
-    "Lime": [154,186,61], 
-    "Navy": [37,62,102], 
-    "Fuschia":[215,53,156]
+    "Lime":       [154,186,61], 
+    "Navy":       [37,62,102], 
+    "Fuschia":    [215,53,156]
   }
   
   colorNameLookup = {};
@@ -44,7 +44,7 @@
 		});
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 550; //mm
+    this.final_width = 970; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -201,6 +201,7 @@
           this.colorGrid[x][y] = this.nearestColor(this.getBrickColor(x, y));
         }
       }
+      this.trigger("change:colorGrid");
     },
     
 		updateBlock: function(pixelX, pixelY, color) {
@@ -284,8 +285,65 @@
       
       return d;
     }
+  }, Backbone.Events)
+
+
+
+  window.ISORenderer= function(canvas, sprites){
+    this.$canvas = $(canvas);
+    this.canvas  = this.$canvas[0]
+    this.ctx     = this.canvas.getContext('2d');
+    this.spriteMap = $('<img>').attr('src', sprites).appendTo('body').hide()[0]; 
+  }
+  
+  _.extend(ISORenderer.prototype, {
+    render: function(colorGrid){
+      this.colorGrid = colorGrid;
+      this.scale();
+      
+      var yOffset = this.colorGrid.length * 8;
+      
+      for(var x = colorGrid.length - 1; x; x--){
+        for(var y=colorGrid[x].length -1; y; y--){
+          var rgb = colorGrid[x][y],
+              offset = isoOffset.apply(null, rgb),
+              dx = x*18,
+              dy = yOffset + y*23 - x*8,
+              dw = SPRITE_WIDTH,
+              dh = SPRITE_HEIGHT,
+              sx = offset,
+              sy = 0,
+              sw = SPRITE_WIDTH,
+              sh = SPRITE_HEIGHT;
+              
+          this.ctx.drawImage(this.spriteMap, sx, sy, sw, sh, dx, dy, dw, dh);
+        }
+      }
+    },
+    
+    scale: function(){
+      var totalWidth = this.colorGrid.length *18 + 20, // x * 18 + padding
+          totalHeight = this.colorGrid.length * 8 + this.colorGrid.length * 23 + 20
+          scale = this.canvas.width / totalWidth;
+          this.canvas.height = totalHeight * scale
+          
+          this.ctx.scale(scale, scale);
+      
+      
+      
+    }
+    
+    
   })
   
+  var SPRITE_WIDTH = 34,
+      SPRITE_HEIGHT = 43;
+      
+  function isoOffset(r, g, b){
+    var str = [r, g, b].toString();
+    return spriteOffsets.indexOf(str) * SPRITE_WIDTH;
+  }
+  _.memoize(isoOffset)
   
   window.Piece = function(colorName, length){
     this.color = colorName;
@@ -328,17 +386,51 @@
       return [h, s, l];
   }
   
+  
+  var spriteOffsets = [
+    [255, 255 ,255],
+    [188,6,2],
+    [36,98,175], 
+    [243,194,3], 
+    [50,50,50], 
+    [45,160,85], 
+    [176,160,109], 
+    [213,127,40], 
+    [116,149,200], 
+    [101,101,101],
+    [84,42,20], 
+    [146,146,146], 
+    [154,186,61], 
+    [37,62,102], 
+    [215,53,156]
+  ]
+  
+  spriteOffsets = _.map(spriteOffsets, function(rgb){return rgb.toString()})
+  
+  
+  
+  
 })() ;
 
 
 $(function(){
   $('#config').submit(function(e){
     b = new Brickifier('#canvas');
-    b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
+    
     e.preventDefault();
     
+    i = new ISORenderer('#iso', '/images/bricks.png');
+    
+    b.bind('change:colorGrid', function(){
+      console.log('change')
+      i.render(b.colorGrid);
+    })
+    
+    b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
     console.log(window.location.hash = "url=" + encodeURIComponent($('#url').val()));
   });
+  
+  
   
 
   // Autoload
