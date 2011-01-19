@@ -284,7 +284,6 @@
 })() ;
 
 
-
 $(function(){
   $('#config').submit(function(e){
     b = new Brickifier('#canvas');
@@ -306,3 +305,4 @@ $(function(){
   
   
 })
+
