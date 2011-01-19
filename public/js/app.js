@@ -4,23 +4,31 @@
   BRICK_WIDTH = 8; //mm
   BRICK_HEIGHT = 9.6; //mm
   
-  colors = [
-    [255, 255 ,255], //white
-    [188,6,2], // red
-    [36,98,175], //blue
-    [243,194,3], //yellow
-    [50,50,50], //dark gray
-    [45,160,85], //green
-    [176,160,109], //brown
-    [213,127,40], //copper
-    [116,149,200], //light blue
-    [101,101,101], //gray
-    [84,42,20], //brown
-    [146,146,146], // light gray
-    [154,186,61], // lime
-    [37,62,102], //navy
-    [215,53,156] //fuschia
-  ]
+  BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
+  
+  namedColors = {
+    "White": [255, 255 ,255],
+    "Red": [188,6,2],
+    "Blue": [36,98,175], 
+    "Yellow": [243,194,3], 
+    "Dark Gray": [50,50,50], 
+    "Green": [45,160,85], 
+    "Brown": [176,160,109], 
+    "Copper": [213,127,40], 
+    "Light Blue": [116,149,200], 
+    "Gray": [101,101,101],
+    "Brown": [84,42,20], 
+    "Light Gray": [146,146,146], 
+    "Lime": [154,186,61], 
+    "Navy": [37,62,102], 
+    "Fuschia":[215,53,156]
+  }
+  
+  colorNameLookup = {};
+  for(var name in namedColors) colorNameLookup[namedColors[name].toString()] = name;
+  
+  colors = _.values(namedColors)
+
   
   window.Brickifier = function(canvas){
     this.$canvas = $(canvas);
@@ -246,6 +254,14 @@
       return d;
     }
   })
+  
+  
+  window.Piece = function(colorName, length){
+    this.color = colorName;
+    this.length = length;
+  }
+  
+  
   
   
   /**
