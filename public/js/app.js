@@ -1,12 +1,12 @@
 (function(){
   // Units in mm
   
-  BRICK_WIDTH = 8; //mm
-  BRICK_HEIGHT = 9.6; //mm
+  window.BRICK_WIDTH = 8; //mm
+  window.BRICK_HEIGHT = 9.6; //mm
   
-  BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
+  window.BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
   
-  namedColors = {
+  window.namedColors = {
     "White":      [255, 255 ,255],
     "Red":        [188,6,2],
     "Blue":       [36,98,175], 
@@ -24,10 +24,10 @@
     "Fuschia":    [215,53,156]
   }
   
-  colorNameLookup = {};
+  window.colorNameLookup = {};
   for(var name in namedColors) colorNameLookup[namedColors[name].toString()] = name;
   
-  colors = _.values(namedColors)
+  window.colors = _.values(namedColors)
 
   
   window.Brickifier = function(canvas){
@@ -306,6 +306,23 @@
       d += Math.abs(color[2] - base[2]) * l_weight;
       
       return d;
+    },
+    
+    pieces: function(){
+      var p = {}, p2 = {}
+      _.each(this.colorGrid, function(row){
+        _.each(row, function(piece){
+          if(p[piece.toString()]){
+            p[piece.toString()]++
+          }else{
+            p[piece.toString()] = 1;
+          }
+        })
+      })
+      _.each(p, function(value, key){
+        p2[colorNameLookup[key]] = value
+      })
+      return p2
     }
   }, Backbone.Events)
 
@@ -479,6 +496,7 @@ $(function(){
     b.bind('change:colorGrid', function(){
       console.log('change')
       i.render(b.colorGrid, false);
+      b.pieces()
     })
     
     b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
