@@ -282,27 +282,3 @@
   }
   
 })() ;
-
-
-<<<<<<< HEAD
-$(function(){
-
-	
-  b = new Brickifier('#canvas1');
-  b.initialize('/images/carsonified.png');
-  
-  b1 = new Brickifier('#canvas2');
-  b1.initialize('/images/dropbox.png');
-  
-  b2 = new Brickifier('#canvas3');
-  b2.initialize('/images/html5.png');
-  
-  b3 = new Brickifier('#canvas4');
-  b3.initialize('/images/ryancarson.jpg');
-  
-  b4 = new Brickifier('#canvas5');
-  b4.initialize('/images/ferrari.jpg');
-  
-})
-=======
->>>>>>> e1db5cdfba6780e2bf6f1e57f809d6810daac59f
