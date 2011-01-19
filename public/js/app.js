@@ -31,8 +31,17 @@
 
   
   window.Brickifier = function(canvas){
+		var self = this;
     this.$canvas = $(canvas);
     this.canvas  = this.$canvas[0]
+
+		this.$canvas.click(function(event) {
+			var target = $(event.target);
+			var x = event.pageX - target.offset().left;
+			var y = event.pageY - target.offset().top;
+			
+			self.updateBlock(x, y);
+		});
     this.ctx     = this.canvas.getContext('2d');
     
     this.final_width = 500; //mm
@@ -44,6 +53,8 @@
     this.colorDistance = this.colorDistanceComplex;
     //this.colorDistance = this.colorDistanceBasic;
     //this.colorDistance = this.colorDistanceHSL;
+
+		this.penColor = "White";
   }
 
   _.extend(Brickifier.prototype, {
@@ -83,6 +94,18 @@
       this.brick_height = this.canvas.height / this.bricks_y;
     },
     
+		// returns a two element array of x,y
+		pixelToBrick: function(xPixel, yPixel) {
+			var xRatio = xPixel / this.canvas.width;
+			var yRatio = yPixel / this.canvas.height;
+			
+			xy = []
+			xy[0] = Math.floor(xRatio * this.bricks_x);
+			xy[1] = Math.floor(yRatio * this.bricks_y);
+			
+			return xy;
+		},
+
     drawImage: function(){
       this.ctx.drawImage(this.img, 0, 0, this.canvas.width, this.canvas.height);
     },
@@ -188,16 +211,24 @@
       this.trigger("change:colorGrid");
     },
     
+		updateBlock: function(pixelX, pixelY, color) {
+			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
+			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
+			this.drawBlocks();
+		},
+
     /*
       Draw 2d blocks to canvas
     */
     drawBlocks: function(){
       var c, style;
+
+			this.canvas.width = this.canvas.width;
+
       for(var x=0; x < this.bricks_x; x++){
         for(var y=0; y < this.bricks_y; y++){
           c = this.colorGrid[x][y];
           style = "rgb("+Math.round(c[0])+","+Math.round(c[1])+","+Math.round(c[2])+")";
-
 
           this.ctx.fillStyle = style;
 
