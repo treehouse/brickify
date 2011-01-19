@@ -414,6 +414,38 @@
 
 
 $(function(){
+	var app = $.sammy('#main', function() {
+		this.brickifier = new Brickifier("#canvas");
+		this.isoRenderer = new ISORenderer('#iso', '/images/bricks.png');
+    
+    this.brickifier.bind('change:colorGrid', function(){
+      console.log('change')
+      this.isoRenderer.render(this.brickifier.colorGrid);
+    });
+		
+		this.showView = function(view) {
+			$('.view').hide();
+			$(view).show();
+		};
+		
+		this.get("/", function() {
+			this.redirect("#/");
+		});
+		
+		this.get("#/", function() {			
+			$('#url').val(this.params["url"]);
+			this.app.showView("#form");
+		});
+		
+		this.get("#/view/", function() {
+    	this.app.brickifier.initialize('/proxy?url=' + encodeURIComponent(this.params["url"]));
+			this.app.showView("#view");
+		});
+	});
+	
+	app.run("#/");
+	
+	/*
   $('#config').submit(function(e){
     b = new Brickifier('#canvas');
     
@@ -441,7 +473,7 @@ $(function(){
     $('#config').submit();
   }
 
+  */
   
-  
-})
+});
 
