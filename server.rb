@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'pony'
 
 
 get '/' do
