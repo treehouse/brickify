@@ -284,3 +284,25 @@
 })() ;
 
 
+
+$(function(){
+  $('#config').submit(function(e){
+    b = new Brickifier('#canvas');
+    b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
+    e.preventDefault();
+    
+    console.log(window.location.hash = "url=" + encodeURIComponent($('#url').val()));
+  });
+  
+
+  // Autoload
+  var hash = window.location.hash.slice(1);
+  if(hash){
+    var url = hash.split('=')[1]
+    $('#url').val(decodeURIComponent(url));
+    $('#config').submit();
+  }
+
+  
+  
+})

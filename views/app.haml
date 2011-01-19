@@ -1,11 +1,7 @@
-%canvas#canvas1{:width=>"800", :height => '600'}
-%hr
-%canvas#canvas2{:width=>"800", :height => '600'}
-%hr
-%canvas#canvas3{:width=>"800", :height => '600'}
-%hr
-%canvas#canvas4{:width=>"800", :height => '600'}
-%hr
-%canvas#canvas5{:width=>"800", :height => '600'}
+%form#config
+  %label{:for => 'url'} Image URL:
+  %input#url{:type => 'text'}
+  %input{:type => 'submit', :value => "Brickify!"}
+
+%canvas#canvas{:width=>"800", :height => '600'}
 %div{:id => "palette"}
-%img{:src => "/proxy?url=http://www.google.com/images/logos/ps_logo2.png"}
