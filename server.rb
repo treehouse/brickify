@@ -19,7 +19,13 @@ get '/css/:name.css' do |name|
 end
 
 get '/proxy' do
-  image_response = Net::HTTP.get_response(URI.parse(params[:url]))
+  uri = URI.parse(params[:url])
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true if uri.scheme == "https"
+  image_response = nil
+  http.start {
+    image_response = http.request_get(uri.path)
+  }
   
   content_type = image_response.response['Content-Type']
   if ["image/png", "image/jpeg", "image/jpg", "image/gif"].include?(content_type) && image_response.body.length < 1000000

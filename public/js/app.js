@@ -240,8 +240,13 @@
 
 $(function(){
 	for(var i = 0,j = colors.length; i < j; i++) {
-		var box = $('#boxes').append("<span></span>")
+		$('#palette').append("<div class=\"color\"></div>");
+		$('#palette div.color:last').css('backgroundColor', "rgb(" + colors[i][0] + ", " + colors[i][1] + ", " + colors[i][2] + ")");
 	}
+	
+	$('#palette div.color').live('click', function(event) {
+		alert($(event.target).css('backgroundColor'));
+	});
 	
   b = new Brickifier('#canvas1');
   b.initialize('/images/carsonified.png');
