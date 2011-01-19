@@ -1,0 +1,242 @@
+SyntaxError - compile error
+./views/app.haml:1: syntax error, unexpected tSTRING_BEG, expecting ')'
+...false, false, nil, nil, :src="/images/carsonified.png");_ham...
+                              ^
+./views/app.haml:1: syntax error, unexpected ')', expecting kEND
+...src="/images/carsonified.png");_hamlout.push_text("<canvas i...
+                              ^:
+ ./views/app.haml:8:in `compile_template_method'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:194:in `evaluate'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:449:in `evaluate'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:131:in `render'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:343:in `render'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:311:in `haml'
+ ./server.rb:7:in `GET /'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:863:in `call'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:863:in `route'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:521:in `instance_eval'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:521:in `route_eval'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:500:in `route!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:497:in `catch'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:497:in `route!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:476:in `each'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:476:in `route!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:601:in `dispatch!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:411:in `call!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `instance_eval'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `invoke'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `catch'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `invoke'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:411:in `call!'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:399:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:979:in `call'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:1005:in `synchronize'
+ /Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:979:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/lint.rb:48:in `_call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/lint.rb:36:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:86:in `proceed_as_child'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:31:in `call!'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:18:in `call'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/favicon.rb:12:in `call'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/static.rb:14:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/builder.rb:77:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/chunked.rb:15:in `call'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:67:in `process'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+ /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+ /Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:38:in `run'
+ /Library/Ruby/Gems/1.8/gems/shotgun-0.8/bin/shotgun:156
+ /usr/bin/shotgun:19:in `load'
+ /usr/bin/shotgun:19
+SyntaxError: compile error
+./views/app.haml:1: syntax error, unexpected tSTRING_BEG, expecting ')'
+...false, false, nil, nil, :src="/images/carsonified.png");_ham...
+                              ^
+./views/app.haml:1: syntax error, unexpected ')', expecting kEND
+...src="/images/carsonified.png");_hamlout.push_text("<canvas i...
+                              ^
+	./views/app.haml:8:in `compile_template_method'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:194:in `evaluate'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:449:in `evaluate'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/tilt.rb:131:in `render'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:343:in `render'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:311:in `haml'
+	./server.rb:7:in `GET /'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:863:in `call'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:863:in `route'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:521:in `instance_eval'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:521:in `route_eval'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:500:in `route!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:497:in `catch'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:497:in `route!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:476:in `each'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:476:in `route!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:601:in `dispatch!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:411:in `call!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `instance_eval'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `invoke'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `catch'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:566:in `invoke'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:411:in `call!'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:399:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/methodoverride.rb:24:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:979:in `call'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:1005:in `synchronize'
+	/Library/Ruby/Gems/1.8/gems/sinatra-1.0/lib/sinatra/base.rb:979:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/lint.rb:48:in `_call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/lint.rb:36:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/showexceptions.rb:24:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/commonlogger.rb:18:in `call'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:86:in `proceed_as_child'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:31:in `call!'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/loader.rb:18:in `call'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/favicon.rb:12:in `call'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/lib/shotgun/static.rb:14:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/builder.rb:77:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/content_length.rb:13:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/chunked.rb:15:in `call'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:67:in `process'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+	/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+	/Library/Ruby/Gems/1.8/gems/rack-1.2.1/lib/rack/handler/mongrel.rb:38:in `run'
+	/Library/Ruby/Gems/1.8/gems/shotgun-0.8/bin/shotgun:156
+	/usr/bin/shotgun:19:in `load'
+	/usr/bin/shotgun:19
+127.0.0.1 - - [18/Jan/2011 15:10:52] "GET / HTTP/1.1" 500 151003 0.4007
+127.0.0.1 - - [18/Jan/2011 15:10:52] "GET / HTTP/1.1" 500 151003 0.4057
+127.0.0.1 - - [18/Jan/2011 15:10:52] "GET /__sinatra__/500.png HTTP/1.1" 200 31056 0.0006
+127.0.0.1 - - [18/Jan/2011 15:10:52] "GET /__sinatra__/500.png HTTP/1.1" 200 31056 0.0052
+127.0.0.1 - - [18/Jan/2011 15:11:33] "GET / HTTP/1.1" 200 378 0.2297
+127.0.0.1 - - [18/Jan/2011 15:11:33] "GET / HTTP/1.1" 200 378 0.2342
+127.0.0.1 - - [18/Jan/2011 15:11:34] "GET /css/main.css HTTP/1.1" 200 - 0.2372
+127.0.0.1 - - [18/Jan/2011 15:11:34] "GET /css/main.css HTTP/1.1" 200 - 0.2417
+127.0.0.1 - - [18/Jan/2011 15:11:34] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0005
+127.0.0.1 - - [18/Jan/2011 15:11:34] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0053
+127.0.0.1 - - [18/Jan/2011 15:12:07] "GET / HTTP/1.1" 200 375 0.2292
+127.0.0.1 - - [18/Jan/2011 15:12:07] "GET / HTTP/1.1" 200 375 0.2339
+127.0.0.1 - - [18/Jan/2011 15:12:07] "GET /css/main.css HTTP/1.1" 200 - 0.0741
+127.0.0.1 - - [18/Jan/2011 15:12:07] "GET /css/main.css HTTP/1.1" 200 - 0.0795
+127.0.0.1 - - [18/Jan/2011 15:12:08] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:12:08] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0055
+127.0.0.1 - - [18/Jan/2011 15:12:11] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0005
+127.0.0.1 - - [18/Jan/2011 15:12:11] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0050
+127.0.0.1 - - [18/Jan/2011 15:12:16] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0005
+127.0.0.1 - - [18/Jan/2011 15:12:16] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0050
+127.0.0.1 - - [18/Jan/2011 15:12:18] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:12:18] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0050
+127.0.0.1 - - [18/Jan/2011 15:13:50] "GET / HTTP/1.1" 200 375 0.2320
+127.0.0.1 - - [18/Jan/2011 15:13:50] "GET / HTTP/1.1" 200 375 0.2365
+127.0.0.1 - - [18/Jan/2011 15:13:50] "GET /css/main.css HTTP/1.1" 200 - 0.0759
+127.0.0.1 - - [18/Jan/2011 15:13:50] "GET /css/main.css HTTP/1.1" 200 - 0.0806
+127.0.0.1 - - [18/Jan/2011 15:13:51] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:13:51] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0049
+127.0.0.1 - - [18/Jan/2011 15:13:53] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:13:53] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0049
+127.0.0.1 - - [18/Jan/2011 15:13:56] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:13:56] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0049
+127.0.0.1 - - [18/Jan/2011 15:14:11] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0004
+127.0.0.1 - - [18/Jan/2011 15:14:11] "GET /images/carsonified.png HTTP/1.1" 404 431 0.0049
+127.0.0.1 - - [18/Jan/2011 15:14:42] "GET / HTTP/1.1" 200 375 0.2319
+127.0.0.1 - - [18/Jan/2011 15:14:42] "GET / HTTP/1.1" 200 375 0.2365
+127.0.0.1 - - [18/Jan/2011 15:14:43] "GET /css/main.css HTTP/1.1" 200 - 0.0773
+127.0.0.1 - - [18/Jan/2011 15:14:43] "GET /css/main.css HTTP/1.1" 200 - 0.0821
+127.0.0.1 - - [18/Jan/2011 15:14:43] "GET / HTTP/1.1" 200 375 0.2324
+127.0.0.1 - - [18/Jan/2011 15:14:43] "GET / HTTP/1.1" 200 375 0.2376
+127.0.0.1 - - [18/Jan/2011 15:14:44] "GET /css/main.css HTTP/1.1" 200 - 0.0760
+127.0.0.1 - - [18/Jan/2011 15:14:44] "GET /css/main.css HTTP/1.1" 200 - 0.0805
+127.0.0.1 - - [18/Jan/2011 15:15:03] "GET / HTTP/1.1" 200 375 0.2297
+127.0.0.1 - - [18/Jan/2011 15:15:03] "GET / HTTP/1.1" 200 375 0.2342
+127.0.0.1 - - [18/Jan/2011 15:15:03] "GET /css/main.css HTTP/1.1" 200 - 0.0744
+127.0.0.1 - - [18/Jan/2011 15:15:03] "GET /css/main.css HTTP/1.1" 200 - 0.0789
+127.0.0.1 - - [18/Jan/2011 15:19:40] "GET / HTTP/1.1" 200 375 0.2304
+127.0.0.1 - - [18/Jan/2011 15:19:40] "GET / HTTP/1.1" 200 375 0.2348
+127.0.0.1 - - [18/Jan/2011 15:19:40] "GET /css/main.css HTTP/1.1" 200 - 0.0792
+127.0.0.1 - - [18/Jan/2011 15:19:40] "GET /css/main.css HTTP/1.1" 200 - 0.0837
+127.0.0.1 - - [18/Jan/2011 15:20:43] "GET / HTTP/1.1" 200 375 0.2294
+127.0.0.1 - - [18/Jan/2011 15:20:43] "GET / HTTP/1.1" 200 375 0.2341
+127.0.0.1 - - [18/Jan/2011 15:20:44] "GET /css/main.css HTTP/1.1" 200 - 0.0736
+127.0.0.1 - - [18/Jan/2011 15:20:44] "GET /css/main.css HTTP/1.1" 200 - 0.0794
+127.0.0.1 - - [18/Jan/2011 15:20:49] "GET / HTTP/1.1" 200 375 0.2347
+127.0.0.1 - - [18/Jan/2011 15:20:49] "GET / HTTP/1.1" 200 375 0.2394
+127.0.0.1 - - [18/Jan/2011 15:20:49] "GET /css/main.css HTTP/1.1" 200 - 0.0747
+127.0.0.1 - - [18/Jan/2011 15:20:49] "GET /css/main.css HTTP/1.1" 200 - 0.0795
+127.0.0.1 - - [18/Jan/2011 15:21:11] "GET / HTTP/1.1" 200 375 0.2293
+127.0.0.1 - - [18/Jan/2011 15:21:11] "GET / HTTP/1.1" 200 375 0.2339
+127.0.0.1 - - [18/Jan/2011 15:21:11] "GET /css/main.css HTTP/1.1" 200 - 0.0748
+127.0.0.1 - - [18/Jan/2011 15:21:11] "GET /css/main.css HTTP/1.1" 200 - 0.0797
+127.0.0.1 - - [18/Jan/2011 15:23:30] "GET / HTTP/1.1" 200 375 0.2299
+127.0.0.1 - - [18/Jan/2011 15:23:30] "GET / HTTP/1.1" 200 375 0.2347
+127.0.0.1 - - [18/Jan/2011 15:23:30] "GET /css/main.css HTTP/1.1" 200 - 0.0750
+127.0.0.1 - - [18/Jan/2011 15:23:30] "GET /css/main.css HTTP/1.1" 200 - 0.0800
+127.0.0.1 - - [18/Jan/2011 15:29:28] "GET / HTTP/1.1" 200 375 0.2307
+127.0.0.1 - - [18/Jan/2011 15:29:28] "GET / HTTP/1.1" 200 375 0.2352
+127.0.0.1 - - [18/Jan/2011 15:29:29] "GET /css/main.css HTTP/1.1" 200 - 0.0753
+127.0.0.1 - - [18/Jan/2011 15:29:29] "GET /css/main.css HTTP/1.1" 200 - 0.0800
+127.0.0.1 - - [18/Jan/2011 18:05:13] "GET / HTTP/1.1" 200 375 0.2336
+127.0.0.1 - - [18/Jan/2011 18:05:13] "GET / HTTP/1.1" 200 375 0.2380
+127.0.0.1 - - [18/Jan/2011 18:05:14] "GET /css/main.css HTTP/1.1" 200 - 0.0785
+127.0.0.1 - - [18/Jan/2011 18:05:14] "GET /css/main.css HTTP/1.1" 200 - 0.0830
+127.0.0.1 - - [18/Jan/2011 18:10:54] "GET / HTTP/1.1" 200 375 0.2299
+127.0.0.1 - - [18/Jan/2011 18:10:54] "GET / HTTP/1.1" 200 375 0.2346
+127.0.0.1 - - [18/Jan/2011 18:10:54] "GET /css/main.css HTTP/1.1" 200 - 0.0741
+127.0.0.1 - - [18/Jan/2011 18:10:54] "GET /css/main.css HTTP/1.1" 200 - 0.0787
+127.0.0.1 - - [18/Jan/2011 18:13:56] "GET / HTTP/1.1" 200 375 0.2262
+127.0.0.1 - - [18/Jan/2011 18:13:56] "GET / HTTP/1.1" 200 375 0.2307
+127.0.0.1 - - [18/Jan/2011 18:13:57] "GET /css/main.css HTTP/1.1" 200 - 0.0740
+127.0.0.1 - - [18/Jan/2011 18:13:57] "GET /css/main.css HTTP/1.1" 200 - 0.0785
+127.0.0.1 - - [18/Jan/2011 18:20:00] "GET / HTTP/1.1" 200 375 0.2268
+127.0.0.1 - - [18/Jan/2011 18:20:00] "GET / HTTP/1.1" 200 375 0.2313
+127.0.0.1 - - [18/Jan/2011 18:20:00] "GET /css/main.css HTTP/1.1" 200 - 0.0747
+127.0.0.1 - - [18/Jan/2011 18:20:00] "GET /css/main.css HTTP/1.1" 200 - 0.0792
+127.0.0.1 - - [18/Jan/2011 18:20:15] "GET / HTTP/1.1" 200 375 0.2220
+127.0.0.1 - - [18/Jan/2011 18:20:15] "GET / HTTP/1.1" 200 375 0.2266
+127.0.0.1 - - [18/Jan/2011 18:20:16] "GET /css/main.css HTTP/1.1" 200 - 0.0741
+127.0.0.1 - - [18/Jan/2011 18:20:16] "GET /css/main.css HTTP/1.1" 200 - 0.0786
+127.0.0.1 - - [18/Jan/2011 18:21:40] "GET / HTTP/1.1" 200 375 0.2244
+127.0.0.1 - - [18/Jan/2011 18:21:40] "GET / HTTP/1.1" 200 375 0.2291
+127.0.0.1 - - [18/Jan/2011 18:21:40] "GET /css/main.css HTTP/1.1" 200 - 0.0804
+127.0.0.1 - - [18/Jan/2011 18:21:40] "GET /css/main.css HTTP/1.1" 200 - 0.0849
+127.0.0.1 - - [18/Jan/2011 18:21:48] "GET / HTTP/1.1" 200 375 0.2343
+127.0.0.1 - - [18/Jan/2011 18:21:48] "GET / HTTP/1.1" 200 375 0.2389
+127.0.0.1 - - [18/Jan/2011 18:21:49] "GET /css/main.css HTTP/1.1" 200 - 0.0780
+127.0.0.1 - - [18/Jan/2011 18:21:49] "GET /css/main.css HTTP/1.1" 200 - 0.0826
+127.0.0.1 - - [18/Jan/2011 18:22:16] "GET / HTTP/1.1" 200 375 0.2267
+127.0.0.1 - - [18/Jan/2011 18:22:16] "GET / HTTP/1.1" 200 375 0.2314
+127.0.0.1 - - [18/Jan/2011 18:22:16] "GET /css/main.css HTTP/1.1" 200 - 0.0748
+127.0.0.1 - - [18/Jan/2011 18:22:16] "GET /css/main.css HTTP/1.1" 200 - 0.0797
+127.0.0.1 - - [18/Jan/2011 18:23:01] "GET / HTTP/1.1" 200 375 0.2277
+127.0.0.1 - - [18/Jan/2011 18:23:01] "GET / HTTP/1.1" 200 375 0.2325
+127.0.0.1 - - [18/Jan/2011 18:23:01] "GET /css/main.css HTTP/1.1" 200 - 0.0749
+127.0.0.1 - - [18/Jan/2011 18:23:01] "GET /css/main.css HTTP/1.1" 200 - 0.0797
+127.0.0.1 - - [18/Jan/2011 18:23:47] "GET / HTTP/1.1" 200 375 0.2296
+127.0.0.1 - - [18/Jan/2011 18:23:47] "GET / HTTP/1.1" 200 375 0.2341
+127.0.0.1 - - [18/Jan/2011 18:23:48] "GET /css/main.css HTTP/1.1" 200 - 0.0755
+127.0.0.1 - - [18/Jan/2011 18:23:48] "GET /css/main.css HTTP/1.1" 200 - 0.0802
+127.0.0.1 - - [18/Jan/2011 18:25:00] "GET / HTTP/1.1" 200 375 0.2284
+127.0.0.1 - - [18/Jan/2011 18:25:00] "GET / HTTP/1.1" 200 375 0.2328
+127.0.0.1 - - [18/Jan/2011 18:25:01] "GET /css/main.css HTTP/1.1" 200 - 0.0759
+127.0.0.1 - - [18/Jan/2011 18:25:01] "GET /css/main.css HTTP/1.1" 200 - 0.0805
