@@ -19,8 +19,11 @@ get '/css/:name.css' do |name|
 end
 
 get '/proxy' do
+  return headers['HTTP_REFERER']
+  
   image_response = Net::HTTP.get_response(URI.parse(params[:url]))
   
   response.headers['Content-Type'] = image_response.response['Content-Type']
+  
   image_response.body
 end
