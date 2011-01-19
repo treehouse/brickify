@@ -7,6 +7,10 @@ get '/' do
   haml :app
 end
 
+get '/demo' do
+  haml :demo
+end
+
 
 get '/css/:name.css' do |name|
   begin

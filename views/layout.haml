@@ -3,11 +3,12 @@
   %head
     %title Brickify
     %link{:rel=>'stylesheet', :href=>'/css/main.css'}
-    
-  %body
-    =yield
     %script{:src => 'js/jquery.js'}
     %script{:src => 'js/underscore.js'}
     %script{:src => 'js/backbone.js'}
     %script{:src => '/js/app.js'}
+    
+  %body
+    =yield
+    
     

@@ -284,24 +284,3 @@
 })() ;
 
 
-$(function(){
-	for(var i = 0,j = colors.length; i < j; i++) {
-		var box = $('#boxes').append("<span></span>")
-	}
-	
-  b = new Brickifier('#canvas1');
-  b.initialize('/images/carsonified.png');
-  
-  b1 = new Brickifier('#canvas2');
-  b1.initialize('/images/dropbox.png');
-  
-  b2 = new Brickifier('#canvas3');
-  b2.initialize('/images/html5.png');
-  
-  b3 = new Brickifier('#canvas4');
-  b3.initialize('/images/ryancarson.jpg');
-  
-  b4 = new Brickifier('#canvas5');
-  b4.initialize('/images/ferrari.jpg');
-  
-})
