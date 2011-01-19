@@ -35,7 +35,7 @@
     this.canvas  = this.$canvas[0]
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 970; //mm
+    this.final_width = 500; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -110,6 +110,11 @@
       return color;
     },
     
+    
+    
+    /*
+      Determines a block's color using the center pixel
+    */
     getBrickColorNearestNeighbor: function(x, y){
       var data = this.ctx.getImageData(
         x * this.brick_width,
@@ -125,14 +130,13 @@
         data.data[offset + 1],
         data.data[offset + 2]
       ]
-      
-      if(data.data[offset + 4] < 1){
-        color = [255, 255, 255];
-      }
-    
+        
       return color;
     },
     
+    /*
+      Determine Brick color using 4 corners + center most common color
+    */
     getBrickColorSample5: function(x, y){
       var data = this.ctx.getImageData(
         x * this.brick_width,
@@ -143,9 +147,9 @@
       
       var offsets = [
         0,                                  //first pixel
-        this.bricks_x - 4,                  //last pixel first row
-        data.data.length - 4,               //last pixel
-        data.data.length - this.bricks_x * 4,//first pixel last row
+        Math.max(0, this.bricks_x - 4),                  //last pixel first row
+        Math.max(0,data.data.length - 4),               //last pixel
+        Math.max(0, data.data.length - this.bricks_x * 4),//first pixel last row
         Math.floor(data.data.length / 8)    // middle(ish) pixel
       ]
       
@@ -168,6 +172,9 @@
       return most.split(',');
     },
     
+    /*
+      Creates colorGrid based on canvas contents
+    */
     generateColorGrid: function(){
       this.colorGrid = []
       
@@ -181,6 +188,9 @@
       this.trigger("change:colorGrid");
     },
     
+    /*
+      Draw 2d blocks to canvas
+    */
     drawBlocks: function(){
       var c, style;
       for(var x=0; x < this.bricks_x; x++){
@@ -196,6 +206,9 @@
       }
     },
     
+    /*
+      Determines the closest pallete color to given color
+    */
     nearestColor: function(base){
       var distance = 10000, nearest, d;
       
@@ -211,6 +224,9 @@
       return colors[nearest];
     },
     
+    /*
+      Calculate color distance as sum of differences of rgb channels
+    */
     colorDistanceBasic: function(color, base){
       var d = Math.abs(color[0] - base[0])
       d += Math.abs(color[1] - base[1])
@@ -218,6 +234,9 @@
       return d
     },
     
+    /*
+      Calc color distance based on complex color theory stuff
+    */
     //http://www.compuphase.com/cmetric.htm
     colorDistanceComplex: function(color, base){
       var r1 = color[0], r2 = base[0],
@@ -238,10 +257,13 @@
 
     },
     
+    /*
+      Calc color distance based on weighted sums of hsl differences
+    */
     colorDistanceHSL: function(color, base){
       var h_weight = 1, 
           s_weight = 1,
-          l_weight = 0.1,
+          l_weight = 1,
           d = 0;
       
       
@@ -257,18 +279,31 @@
   }, Backbone.Events)
 
 
-
-  window.ISORenderer= function(canvas, sprites){
-    this.$canvas = $(canvas);
+  /*
+    Renders isometric view based on a colorGrid
+  */
+  window.IsoRenderer= function(canvas, sprites, scale){
+    this.$canvas = $(canvas).hide();
     this.canvas  = this.$canvas[0]
     this.ctx     = this.canvas.getContext('2d');
     this.spriteMap = $('<img>').attr('src', sprites).appendTo('body').hide()[0]; 
+    this.scaling = scale;
   }
   
-  _.extend(ISORenderer.prototype, {
-    render: function(colorGrid){
+  _.extend(IsoRenderer.prototype, {
+    
+    /*
+      Render given colorGrid to self
+      If scaling, constrain rendering to canvas width
+    */
+    render: function(colorGrid, scaling){
+      if("undefined" !== typeof scaling){
+        this.scaling = scaling;
+      }  
       this.colorGrid = colorGrid;
       this.scale();
+      
+     
       
       var yOffset = this.colorGrid.length * 8;
       
@@ -288,16 +323,29 @@
           this.ctx.drawImage(this.spriteMap, sx, sy, sw, sh, dx, dy, dw, dh);
         }
       }
+      var data = this.canvas.toDataURL("image/png");
+      $('#out').attr('src', data);
     },
     
+    /*
+      Scales canvas if scaling is on.
+      Also resizes height to rendering proportions
+    */
     scale: function(){
+      
       var totalWidth = this.colorGrid.length *18 + 20, // x * 18 + padding
-          totalHeight = this.colorGrid.length * 8 + this.colorGrid.length * 23 + 20
-          scale = this.canvas.width / totalWidth;
+          totalHeight = this.colorGrid.length * 8 + this.colorGrid[0].length * 23 + 20
+      
+      if(this.scaling){
+          var scale = this.canvas.width / totalWidth;
           this.canvas.height = totalHeight * scale
           
           this.ctx.scale(scale, scale);
-      
+      }
+      else{
+        this.canvas.height = totalHeight;
+        this.canvas.width = totalWidth;
+      }
       
       
     }
@@ -305,14 +353,39 @@
     
   })
   
+  // Sprite Dimensions
   var SPRITE_WIDTH = 34,
       SPRITE_HEIGHT = 43;
+  
+  // Order of sprites in map  
+  var spriteOffsets = [
+    [255, 255 ,255],
+    [188,6,2],
+    [36,98,175], 
+    [243,194,3], 
+    [50,50,50], 
+    [45,160,85], 
+    [176,160,109], 
+    [213,127,40], 
+    [116,149,200], 
+    [101,101,101],
+    [84,42,20], 
+    [146,146,146], 
+    [154,186,61], 
+    [37,62,102], 
+    [215,53,156]
+  ]
+
+  spriteOffsets = _.map(spriteOffsets, function(rgb){return rgb.toString()})
       
+  // Return pixel offset of given rgb value in sprite map
   function isoOffset(r, g, b){
     var str = [r, g, b].toString();
     return spriteOffsets.indexOf(str) * SPRITE_WIDTH;
   }
   _.memoize(isoOffset)
+  
+  
   
   window.Piece = function(colorName, length){
     this.color = colorName;
@@ -356,25 +429,7 @@
   }
   
   
-  var spriteOffsets = [
-    [255, 255 ,255],
-    [188,6,2],
-    [36,98,175], 
-    [243,194,3], 
-    [50,50,50], 
-    [45,160,85], 
-    [176,160,109], 
-    [213,127,40], 
-    [116,149,200], 
-    [101,101,101],
-    [84,42,20], 
-    [146,146,146], 
-    [154,186,61], 
-    [37,62,102], 
-    [215,53,156]
-  ]
   
-  spriteOffsets = _.map(spriteOffsets, function(rgb){return rgb.toString()})
   
   
   
@@ -388,11 +443,11 @@ $(function(){
     
     e.preventDefault();
     
-    i = new ISORenderer('#iso', '/images/bricks.png');
+    i = new IsoRenderer('#iso', '/images/bricks.png');
     
     b.bind('change:colorGrid', function(){
       console.log('change')
-      i.render(b.colorGrid);
+      i.render(b.colorGrid, false);
     })
     
     b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
