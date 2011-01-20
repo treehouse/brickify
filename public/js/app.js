@@ -372,6 +372,8 @@
       }
       var data = this.canvas.toDataURL("image/png");
       $('#out').attr('src', data);
+      
+      this.trigger('after-render');
     },
     
     /*
@@ -398,7 +400,7 @@
     }
     
     
-  })
+  }, Backbone.Events)
   
   // Sprite Dimensions
   var SPRITE_WIDTH = 34,
@@ -525,6 +527,8 @@ $(function() {
 			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
 		});
 		
+		
+		
 		this.get("#/edit/", function() {
 			this.app.updateUrl(encodeURIComponent(this.params["url"]));
 			this.app.showView("#edit");
@@ -538,6 +542,24 @@ $(function() {
 	app.brickifier.bind('redraw', function() {
     app.needsUpdate = true;
   });
+  
+  app.isoRenderer.bind('after-render', function(){
+	  refreshPieces(app.brickifier);
+	})
+	function refreshPieces(brickifier){
+	    console.log('refresh')
+  	  console.log(window.x = brickifier.pieces())
+  	  var pieces = brickifier.pieces(),
+  	      $inv = $('#inventory').empty();
+
+  	  console.log(pieces)
+  	  _.each(pieces, function(value, key){
+  	    console.log(value, key)
+  	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+  	  })
+
+
+	}
 	
 	// palette buildout
 	var names = _.keys(namedColors);
