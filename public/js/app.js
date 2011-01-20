@@ -561,7 +561,7 @@
     ROW_SPREAD = 8;
   
   window.Schematic = function(canvas, brickifier){
-    this.$canvas = $(canvas).hide();
+    this.$canvas = $(canvas);
     this.canvas  = this.$canvas[0];
     this.ctx     = this.canvas.getContext('2d');
     
@@ -606,58 +606,59 @@
       }
 		      return new Piece(colorNameLookup[color], bar);
 
-		    },
+    },
 
-		    render: function(){
-		      var x=0; y=0, self = this;
+    render: function(){
+      console.log("Schematic Render")
+      var x=0; y=0, self = this;
 
-		      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
-		      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
+      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
+      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
 
-		      this.ctx.fillStyle = "#CCC"
-		      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+      this.ctx.fillStyle = "#CCC"
+      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
 
 
-		      _.each(this.rows, function(row){
-		        x=0;
+      _.each(this.rows, function(row){
+        x=0;
 
-		        _.each(row, function(piece){
-		          self.drawPiece(x, y, piece);
-		          x+= piece.length;
-		        })
+        _.each(row, function(piece){
+          self.drawPiece(x, y, piece);
+          x+= piece.length;
+        })
 
-		        y++;
-		      })
+        y++;
+      })
 
-		      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
-		    },
+      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+    },
 
-		    drawPiece: function(xCell, yCell, piece){
-		      var ctx = this.ctx,
-		          x = CELL_WIDTH * xCell + PADDING,
-		          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
+    drawPiece: function(xCell, yCell, piece){
+      var ctx = this.ctx,
+          x = CELL_WIDTH * xCell + PADDING,
+          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
 
-		      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
+      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
 
-		      ctx.fillRect(
-		        x, 
-		        y+BUMP_HEIGHT, 
-		        piece.length * CELL_WIDTH - (PADDING * 2), 
-		        CELL_HEIGHT - BUMP_HEIGHT
-		      );
+      ctx.fillRect(
+        x, 
+        y+BUMP_HEIGHT, 
+        piece.length * CELL_WIDTH - (PADDING * 2), 
+        CELL_HEIGHT - BUMP_HEIGHT
+      );
 
-		      for(var i=0; i<piece.length; i++){
-		        ctx.fillRect(
-		          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
-		          y,
-		          BUMP_WIDTH,
-		          BUMP_HEIGHT
-		        )
-		      }
-		    }
-		  })
+      for(var i=0; i<piece.length; i++){
+        ctx.fillRect(
+          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
+          y,
+          BUMP_WIDTH,
+          BUMP_HEIGHT
+        )
+      }
+    }
+  })
 
-		})();// Schemtaic
+  })();// Schemtaic
 		  
   /**
 	*
@@ -860,9 +861,8 @@ $(function() {
 			self = this;
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
-				setTimeout(function() { self.app.isoRenderer.render(); }, 0);
-				s.calculate();
-        refreshPieces()
+        self.app.isoRenderer.render(); 
+        refreshPieces(app.brickifier)
 				this.app.isoDirty = false;
 			}
 			
@@ -880,7 +880,7 @@ $(function() {
 	window.s = new Schematic("#schematic", app.brickifier)
 	
 	app.brickifier.bind('change:colorGrid', function() {
-    app.isoRenderer.render(app.brickifier.colorGrid);
+    app.isoRenderer.render();
   });
 
 	app.brickifier.bind('redraw', function() {
@@ -900,6 +900,8 @@ $(function() {
 	
 	function refreshPieces(brickifier){
 	    console.log('refresh')
+	    s.calculate();
+
   	  var pieces = _.flatten(s.rows),
   	      $inv = $('#inventory tbody').empty(),
   	      counts = {};
@@ -913,7 +915,6 @@ $(function() {
 
 
   	  _.each(counts, function(qty, key){
-  	    console.log(qty, key)
   	    var parts = key.split("-"), length = parts[1], color= parts[0];
   	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
