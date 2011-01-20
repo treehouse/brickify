@@ -602,7 +602,7 @@
       var rows = this.colorGrid[0].length,
           cols = this.colorGrid.length,
           r, c;
-          
+      this.rows = [];
       for(r=0; r < rows; r++){
         var row = [];
         
@@ -614,7 +614,11 @@
         
         this.rows.push(row);
       }
-      this.render();
+      var self = this
+      setTimeout(function(){
+        self.render();
+      }, 10)
+
     },
     
     getLongestBrick: function(xStart, y){
@@ -633,58 +637,60 @@
       }
 		      return new Piece(colorNameLookup[color], bar);
 
-		    },
+    },
 
-		    render: function(){
-		      var x=0; y=0, self = this;
+    render: function(){
+      console.log("Schematic Render")
+      var x=0; y=0, self = this;
 
-		      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
-		      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
+      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
+      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
 
-		      this.ctx.fillStyle = "#CCC"
-		      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+      this.ctx.fillStyle = "#CCC"
+      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
 
 
-		      _.each(this.rows, function(row){
-		        x=0;
+      _.each(this.rows, function(row){
+        x=0;
 
-		        _.each(row, function(piece){
-		          self.drawPiece(x, y, piece);
-		          x+= piece.length;
-		        })
+        _.each(row, function(piece){
+          self.drawPiece(x, y, piece);
+          x+= piece.length;
+        })
 
-		        y++;
-		      })
+        y++;
+      })
 
-		      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
-		    },
+      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+      console.log("End of schematic render")
+    },
 
-		    drawPiece: function(xCell, yCell, piece){
-		      var ctx = this.ctx,
-		          x = CELL_WIDTH * xCell + PADDING,
-		          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
+    drawPiece: function(xCell, yCell, piece){
+      var ctx = this.ctx,
+          x = CELL_WIDTH * xCell + PADDING,
+          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
 
-		      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
+      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
 
-		      ctx.fillRect(
-		        x, 
-		        y+BUMP_HEIGHT, 
-		        piece.length * CELL_WIDTH - (PADDING * 2), 
-		        CELL_HEIGHT - BUMP_HEIGHT
-		      );
+      ctx.fillRect(
+        x, 
+        y+BUMP_HEIGHT, 
+        piece.length * CELL_WIDTH - (PADDING * 2), 
+        CELL_HEIGHT - BUMP_HEIGHT
+      );
 
-		      for(var i=0; i<piece.length; i++){
-		        ctx.fillRect(
-		          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
-		          y,
-		          BUMP_WIDTH,
-		          BUMP_HEIGHT
-		        )
-		      }
-		    }
-		  })
+      for(var i=0; i<piece.length; i++){
+        ctx.fillRect(
+          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
+          y,
+          BUMP_WIDTH,
+          BUMP_HEIGHT
+        )
+      }
+    }
+  })
 
-		})();// Schemtaic
+  })();// Schemtaic
 		  
   /**
 	*
@@ -888,9 +894,8 @@ $(function() {
 		this.get("#/view/", function() {
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
-				this.app.isoRenderer.render();
-				s.calculate();
-        refreshPieces();
+        this.app.isoRenderer.render(); 
+        refreshPieces(app.brickifier)
 				this.app.isoDirty = false;
 			}
 			
@@ -929,6 +934,8 @@ $(function() {
 	
 	function refreshPieces(brickifier){
 	    console.log('refresh')
+	    s.calculate();
+
   	  var pieces = _.flatten(s.rows),
   	      $inv = $('#inventory tbody').empty(),
   	      counts = {};
@@ -942,7 +949,6 @@ $(function() {
 
 
   	  _.each(counts, function(qty, key){
-  	    console.log(qty, key)
   	    var parts = key.split("-"), length = parts[1], color= parts[0];
   	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
