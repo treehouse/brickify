@@ -45,7 +45,7 @@
 		});
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 1000; //mm
+    this.final_width = 600; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -576,7 +576,30 @@ $(function() {
   });
 	
 	app.run("#/");
+
+  
+
+  $('#iso_viewer').dragscrollable();
 	
 	window.app = app;
 });
+
+
+$(function(){
+  var full = $('#full'), fit = $('#fit'), viewer = $('#iso_viewer');
+  
+  full.click(function(e){
+    viewer.addClass('full').removeClass('fit')
+    full.addClass('active');
+    fit.removeClass('active');
+    e.preventDefault();
+  })
+  
+  fit.click(function(e){
+    viewer.addClass('fit').removeClass('full')
+    fit.addClass('active');
+    full.removeClass('active');
+    e.preventDefault();
+  })
+})
 

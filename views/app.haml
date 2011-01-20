@@ -9,7 +9,12 @@
   %div#view{:class=>"view", :style=>"display: none;"}
     %canvas#iso{:width=>"800", :height => '600'}
     %a#edit-link Edit
-    %img#out
+    .controls
+      %a#fit{:href => "#"} Fit
+      %a#full{:href => "#"} Full
+    #iso_viewer.fit
+      %img#out
+      
     %ul#inventory
   
   %div#edit{:class=>"view", :style=>"display: none;"}
