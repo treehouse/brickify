@@ -1,12 +1,12 @@
 (function(){
   // Units in mm
   
-  BRICK_WIDTH = 8; //mm
-  BRICK_HEIGHT = 9.6; //mm
+  window.BRICK_WIDTH = 8; //mm
+  window.BRICK_HEIGHT = 9.6; //mm
   
-  BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
+  window.BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
   
-  namedColors = {
+  window.namedColors = {
     "White":      [255, 255 ,255],
     "Red":        [188,6,2],
     "Blue":       [36,98,175], 
@@ -24,10 +24,10 @@
     "Fuschia":    [215,53,156]
   }
   
-  colorNameLookup = {};
+  window.colorNameLookup = {};
   for(var name in namedColors) colorNameLookup[namedColors[name].toString()] = name;
   
-  colors = _.values(namedColors)
+  window.colors = _.values(namedColors)
 
   
   window.Brickifier = function(canvas){
@@ -45,7 +45,7 @@
 		});
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 500; //mm
+    this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -167,11 +167,11 @@
       );
       
       var offsets = [
-        0,                                  //first pixel
-        Math.max(0, this.bricks_x - 4),                  //last pixel first row
-        Math.max(0,data.data.length - 4),               //last pixel
-        Math.max(0, data.data.length - this.bricks_x * 4),//first pixel last row
-        Math.floor(data.data.length / 8)    // middle(ish) pixel
+        0,                                      //first pixel
+        Math.max(0, this.bricks_x - 4),                    //last pixel first row
+        Math.max(0, data.data.length - 4),                 //last pixel
+        Math.max(0, data.data.length - this.bricks_x * 4), //first pixel last row
+        Math.floor((data.data.length/4) / 2) * 4        // middle(ish) pixel
       ]
       
       var freq = {}
@@ -306,6 +306,23 @@
       d += Math.abs(color[2] - base[2]) * l_weight;
       
       return d;
+    },
+    
+    pieces: function(){
+      var p = {}, p2 = {}
+      _.each(this.colorGrid, function(row){
+        _.each(row, function(piece){
+          if(p[piece.toString()]){
+            p[piece.toString()]++
+          }else{
+            p[piece.toString()] = 1;
+          }
+        })
+      })
+      _.each(p, function(value, key){
+        p2[colorNameLookup[key]] = value
+      })
+      return p2
     }
   }, Backbone.Events)
 
@@ -465,7 +482,6 @@
   
   
 })() ;
-
 
 $(function() {
 	var app = $.sammy('#main', function() {
