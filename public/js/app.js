@@ -44,7 +44,7 @@
 		});
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 500; //mm
+    this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -169,11 +169,11 @@
       );
       
       var offsets = [
-        0,                                  //first pixel
-        Math.max(0, this.bricks_x - 4),                  //last pixel first row
-        Math.max(0,data.data.length - 4),               //last pixel
-        Math.max(0, data.data.length - this.bricks_x * 4),//first pixel last row
-        Math.floor(data.data.length / 8)    // middle(ish) pixel
+        0,                                      //first pixel
+        Math.max(0, this.bricks_x - 4),                    //last pixel first row
+        Math.max(0, data.data.length - 4),                 //last pixel
+        Math.max(0, data.data.length - this.bricks_x * 4), //first pixel last row
+        Math.floor((data.data.length/4) / 2) * 4        // middle(ish) pixel
       ]
       
       var freq = {}
