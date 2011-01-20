@@ -1,7 +1,0 @@
-%table#inventory
-  %thead
-    %tr
-      %th Color
-      %th Size
-      %th QTY
-  %tbody
