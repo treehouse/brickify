@@ -355,8 +355,8 @@
       
       var yOffset = this.colorGrid.length * 8;
       
-      for(var x = colorGrid.length - 1; x; x--){
-        for(var y=colorGrid[x].length -1; y; y--){
+      for(var x = colorGrid.length - 1; x >= 0; x--){
+        for(var y=colorGrid[x].length -1; y >= 0; y--){
           var rgb = colorGrid[x][y],
               offset = isoOffset.apply(null, rgb),
               dx = x*18,
@@ -531,9 +531,6 @@ $(function() {
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
   });
-	/*app.brickifier.bind('redraw', function() {
-    app.isoRenderer.render(app.brickifier.colorGrid);
-  });*/
 	
 	// palette buildout
 	var names = _.keys(namedColors);
