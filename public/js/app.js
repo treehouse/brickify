@@ -887,6 +887,7 @@ $(function() {
 			this.app.url = "";
 			this.app.isoDirty = true;
 			this.app.isoRendered = false;
+			this.app.brickifier.updatedBlcoks = null;
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
