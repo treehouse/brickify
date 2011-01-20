@@ -13,13 +13,13 @@ end
 
 
 get '/css/:name.css' do |name|
-  begin
-    headers 'Cache-Control' => 'public, max-age 43200'
+  #begin
+    #headers 'Cache-Control' => 'public, max-age 43200'
     content_type 'text/css'
     sass :"sass/#{name}"
-  rescue
-    halt 404
-  end
+  #rescue
+    #halt 404
+  #end
 end
 
 get '/proxy' do

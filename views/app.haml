@@ -1,17 +1,13 @@
-%div#main
+%canvas#iso{:width=>"800", :height => '600'}
+%img#out
 
-  %div#form{:class=>"view"}
-    %form#config{:action=>"#/view/", :method=>"get"}
-      %label{:for => 'url'} Image URL:
-      %input#url{:type => 'text', :name => "url"}
-      %input{:type => 'submit', :value => "Brickify!"}
-    
-  %div#view{:class=>"view", :style=>"display: none;"}
-    %canvas#iso{:width=>"800", :height => '600'}
-    %a#edit-link Edit
-    %img#out
-  
-  %div#edit{:class=>"view", :style=>"display: none;"}
-    %canvas#canvas{:width=>"800", :height => '600'}
-    %div{:id => "palette"}
-    %a#view-link View
+%form#config
+  %label{:for => 'url'} Image URL:
+  %input#url{:type => 'text'}
+  %input{:type => 'submit', :value => "Brickify!"}
+
+%canvas#canvas{:width=>"800", :height => '600'}
+%div{:id => "palette"}
+%hr
+
+

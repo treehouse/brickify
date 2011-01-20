@@ -19,8 +19,6 @@
     }
   
     $('#palette div.color').live('click', function(event) {
-      $('#palette div.color').css("borderWidth", "1px");
-      $(event.target).css("borderWidth", "2px");
       b.penColor = $(event.target).attr('data-color');
     });
 
