@@ -1,12 +1,30 @@
 %div#main
-
+  
   %div#form{:class=>"view"}
     %form#config{:action=>"#/view/", :method=>"get"}
-      %label{:for => 'url'} Image URL:
-      %input#url{:type => 'text', :name => "url"}
-      %input{:type => 'submit', :value => "Brickify!"}
-    
+      %ul
+        %li
+          %label{:for => 'url'}
+          %strong Image URL:
+          %ul
+            %li
+              %input#url{:type => 'text', :name => "url"}
+            %li
+              %a{:href=>'http://imgur.com/'} Need to upload your photo?
+        %li
+          Slider
+          %ul
+            %li Less detail, fewer bricks
+            %li More detail, more bricks
+        %li
+          %input{:type => 'submit', :value => "Brickify!"}
+  
+  %hr
+  
   %div#view{:class=>"view", :style=>"display: none;"}
+    %div
+      %h1 Wow, looks great!
+      %p Here's your Brickified photo.
     %canvas#iso{:width=>"800", :height => '600'}
     %a#edit-link Edit
     .controls
@@ -16,7 +34,9 @@
       %img#out
       
     %ul#inventory
-  
+
+  %hr
+
   %div#edit{:class=>"view", :style=>"display: none;"}
     %canvas#canvas{:width=>"800", :height => '600'}
     %div{:id => "palette"}
