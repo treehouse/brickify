@@ -516,6 +516,7 @@ $(function() {
 		
 		this.get("#/view/", function() {
 			this.app.updateUrl(encodeURIComponent(this.params["url"]));
+			this.app.isoRenderer.render(app.brickifier.colorGrid);
 			this.app.showView("#view");
 			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
 		});
@@ -530,9 +531,9 @@ $(function() {
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
   });
-	app.brickifier.bind('redraw', function() {
+	/*app.brickifier.bind('redraw', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
-  });
+  });*/
 	
 	// palette buildout
 	var names = _.keys(namedColors);
