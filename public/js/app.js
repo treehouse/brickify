@@ -853,6 +853,8 @@ $(function() {
 		
 		this.get("#/", function() {			
 			this.app.url = "";
+			this.app.isoDirty = true;
+			this.app.isoRendered = false;
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
@@ -861,7 +863,7 @@ $(function() {
 			self = this;
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
-        self.app.isoRenderer.render(); 
+        this.app.isoRenderer.render(); 
         refreshPieces(app.brickifier)
 				this.app.isoDirty = false;
 			}
@@ -880,12 +882,17 @@ $(function() {
 	window.s = new Schematic("#schematic", app.brickifier)
 	
 	app.brickifier.bind('change:colorGrid', function() {
+<<<<<<< HEAD
     app.isoRenderer.render();
+=======
+		app.isoDirty = true;
+>>>>>>> 6ec8c05e4ef5794a61985076fd85b3048d0badf4
   });
 
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
 		app.isoDirty = true;
+		console.log("Marked iso dirty");
 		
 		if (app.isoRendered == false) {
 				setTimeout(function() { app.isoRenderer.render(); }, 0);
