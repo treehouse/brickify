@@ -487,6 +487,7 @@ $(function() {
 	var app = $.sammy('#main', function() {
 		this.brickifier = new Brickifier("#canvas");
 		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png');
+		this.needsUpdate = false;
 		this.url = null;
 		
 		this.showView = function(view) {
@@ -516,7 +517,10 @@ $(function() {
 		
 		this.get("#/view/", function() {
 			this.app.updateUrl(encodeURIComponent(this.params["url"]));
-			this.app.isoRenderer.render(app.brickifier.colorGrid);
+			if (this.app.needsUpdate) {
+				this.app.isoRenderer.render(app.brickifier.colorGrid);
+				this.app.needsUpdate = false;
+			}
 			this.app.showView("#view");
 			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
 		});
@@ -530,6 +534,9 @@ $(function() {
 	
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
+  });
+	app.brickifier.bind('redraw', function() {
+    app.needsUpdate = true;
   });
 	
 	// palette buildout
