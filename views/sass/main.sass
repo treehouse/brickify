@@ -15,3 +15,32 @@ body
   overflow: hidden
   background: url('/images/brickify.png') no-repeat
   
+.color
+  width: 40px
+  height: 40px
+  border: 1px solid #000
+  float: left
+  margin-right: 5px
+  
+#iso_viewer
+  position: relative
+  background: #FFF
+  border: solid 2px #000
+
+  &.full
+    overflow: auto
+    height: 500px
+
+  &.fit img
+    width: 100%
+    
+.controls
+  z-index: 1000
+  position: relative
+  display: inline-block
+  top: 20px
+  left: -20px
+  
+  .a
+    padding: 10px
+  background: #CCC

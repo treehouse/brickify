@@ -35,6 +35,8 @@
     this.$canvas = $(canvas);
     this.canvas  = this.$canvas[0]
 
+		this.painting = false;
+		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
 			var x = event.pageX - target.offset().left;
@@ -42,9 +44,25 @@
 			
 			self.updateBlock(x, y);
 		});
+		this.$canvas.mousedown(function(event) {
+			this.painting = true;
+		});
+		this.$canvas.mouseup(function(event) {
+			this.painting = false;
+		});
+		this.$canvas.mousemove(function(event) {
+			if (this.painting) {
+				var target = $(event.target);
+				var x = event.pageX - target.offset().left;
+				var y = event.pageY - target.offset().top;
+			
+				self.updateBlock(x, y);
+			}
+		});
+		
     this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 1000; //mm
+    this.final_width = 600; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -62,11 +80,8 @@
     /* Load img src, and async trigger this.process() */
     initialize: function(img){
       var self = this;
-      this.img = $('<img>').load(function(){
-        self.img_width = self.img.height;
-        self.img_height = self.img.width;
-        
-        self.process();
+      this.img = $('<img>').load(function(){        
+        setTimeout(function() { self.process() }, 0);
       }).attr('src', img).appendTo('body').hide()[0];
     },
     
@@ -79,8 +94,8 @@
     },
     
     calculateDimensions: function(){
-      var prop = this.img_width / this.img_height;
-      
+      var prop = this.img.height / this.img.width;
+
       // Scale height to fit proportions.
       this.canvas.height = Math.floor(this.canvas.width * prop);
       this.final_height = Math.floor(this.final_width * prop);
@@ -235,6 +250,8 @@
           this.ctx.fillRect(x*this.brick_width, y*this.brick_height, this.brick_width, this.brick_height);
         }
       }
+
+			this.trigger("redraw");
     },
     
     /*
@@ -355,8 +372,8 @@
       
       var yOffset = this.colorGrid.length * 8;
       
-      for(var x = colorGrid.length - 1; x; x--){
-        for(var y=colorGrid[x].length -1; y; y--){
+      for(var x = colorGrid.length - 1; x >= 0; x--){
+        for(var y=colorGrid[x].length -1; y >= 0; y--){
           var rgb = colorGrid[x][y],
               offset = isoOffset.apply(null, rgb),
               dx = x*18,
@@ -367,12 +384,13 @@
               sy = 0,
               sw = SPRITE_WIDTH,
               sh = SPRITE_HEIGHT;
-              
           this.ctx.drawImage(this.spriteMap, sx, sy, sw, sh, dx, dy, dw, dh);
         }
       }
       var data = this.canvas.toDataURL("image/png");
       $('#out').attr('src', data);
+      
+      this.trigger('after-render');
     },
     
     /*
@@ -399,7 +417,7 @@
     }
     
     
-  })
+  }, Backbone.Events)
   
   // Sprite Dimensions
   var SPRITE_WIDTH = 34,
@@ -484,37 +502,121 @@
   
 })() ;
 
-
-$(function(){
-  $('#config').submit(function(e){
-    b = new Brickifier('#canvas');
-    
-    e.preventDefault();
-    
-    i = new IsoRenderer('#iso', '/images/bricks.png');
-    
-    b.bind('change:colorGrid', function(){
-      console.log('change')
-      i.render(b.colorGrid, false);
-      b.pieces()
-    })
-    
-    b.initialize('/proxy?url=' + encodeURIComponent($('#url').val()))
-    console.log(window.location.hash = "url=" + encodeURIComponent($('#url').val()));
+$(function() {
+	var app = $.sammy('#main', function() {
+		this.brickifier = new Brickifier("#canvas");
+		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png');
+		this.needsUpdate = false;
+		this.url = null;
+		
+		this.showView = function(view) {
+			$('.view').hide();
+			$(view).show();
+			
+			console.log(this.brickifier.canvas);
+		};
+		
+		this.updateUrl = function(url) {
+			if (this.url != url) {
+				console.log("Updating url!");
+				this.url = url;
+				this.brickifier.initialize('/proxy?url=' + url);
+			}
+		}
+		
+		
+		this.get("/", function() {
+			this.redirect("#/");
+		});
+		
+		this.get("#/", function() {			
+			$('#url').val(this.params["url"]);
+			this.app.showView("#form");
+		});
+		
+		this.get("#/view/", function() {
+			this.app.updateUrl(encodeURIComponent(this.params["url"]));
+			if (this.app.needsUpdate) {
+				this.app.isoRenderer.render(app.brickifier.colorGrid);
+				this.app.needsUpdate = false;
+			}
+			this.app.showView("#view");
+			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
+		});
+		
+		
+		
+		this.get("#/edit/", function() {
+			this.app.updateUrl(encodeURIComponent(this.params["url"]));
+			this.app.showView("#edit");
+			$('#view-link').attr("href", "#/view/?url=" + this.app.url);
+		});
+	});
+	
+	app.brickifier.bind('change:colorGrid', function() {
+    app.isoRenderer.render(app.brickifier.colorGrid);
+  });
+	app.brickifier.bind('redraw', function() {
+    app.needsUpdate = true;
   });
   
-  
-  
+  app.isoRenderer.bind('after-render', function(){
+	  refreshPieces(app.brickifier);
+	})
+	function refreshPieces(brickifier){
+	    console.log('refresh')
+  	  console.log(window.x = brickifier.pieces())
+  	  var pieces = brickifier.pieces(),
+  	      $inv = $('#inventory').empty();
 
-  // Autoload
-  var hash = window.location.hash.slice(1);
-  if(hash){
-    var url = hash.split('=')[1]
-    $('#url').val(decodeURIComponent(url));
-    $('#config').submit();
+  	  console.log(pieces)
+  	  _.each(pieces, function(value, key){
+  	    console.log(value, key)
+  	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+  	  })
+
+
+	}
+	
+	// palette buildout
+	var names = _.keys(namedColors);
+  for(var i = 0,j = colors.length; i < j; i++) {
+    $('#palette').append("<div class=\"color\" data-color=\"" + names[i] + "\"></div>");
+    $('#palette div.color:last').css('backgroundColor', "rgb(" + colors[i][0] + ", " + colors[i][1] + ", " + 
+        colors[i][2] + ")");
   }
 
+  $('#palette div.color').live('click', function(event) {
+    $('#palette div.color').css("borderWidth", "1px");
+    $(event.target).css("borderWidth", "2px");
+    app.brickifier.penColor = $(event.target).attr('data-color');
+  });
+	
+	app.run("#/");
+
   
+
+  $('#iso_viewer').dragscrollable();
+	
+	window.app = app;
+});
+
+
+$(function(){
+  var full = $('#full'), fit = $('#fit'), viewer = $('#iso_viewer');
   
+  full.click(function(e){
+    viewer.addClass('full').removeClass('fit')
+    full.addClass('active');
+    fit.removeClass('active');
+    e.preventDefault();
+  })
+  
+  fit.click(function(e){
+    viewer.addClass('fit').removeClass('full')
+    fit.addClass('active');
+    full.removeClass('active');
+    e.preventDefault();
+  })
 })
 
