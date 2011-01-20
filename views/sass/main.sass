@@ -5,9 +5,18 @@ body
     family: "Proxima Nova", arial, "sans-serif"
     size: 16px
   line-height: 1.25em
+  color: #333
     
 a
   text-decoration: none
+  color: #274a94
+  
+  &:hover
+    color: #3769ad
+  
+  &:active
+    position: relative
+    top: 1px
 
 hr
   display: none
@@ -15,64 +24,93 @@ hr
 #wrapper
   width: 960px
   margin: 0 auto
-
-/* Header
-
-#logo
-  display: block
-  float: left
-  width: 330px
-  height: 0
-  padding-top: 50px
-  overflow: hidden
-  background: url('/images/brickify.png') no-repeat
-  margin-bottom: 30px
   
-#description
-  display: block
-  float: right
-
 #main
   background-color: #eee
   -webkit-box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
   -moz-box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
   box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
   border: 1px solid #ddd
-  padding: 15px
+  padding: 30px 30px
   margin-top: 30px
   clear: both
 
+
+/* Header
+
+#logo
+  display: block
+  width: 330px
+  height: 0
+  padding-top: 50px
+  overflow: hidden
+  background: url('/images/brickify.png') no-repeat
+  margin: 0 auto 30px auto
+  
+/* Form
+
+#form
+  padding: 10px 0
+  
+#form h2
+  font:
+    size: 36px
+  text-align: center
+  display: block
+  padding-bottom: 30px
+  
+#sample
+  float: right
+  background: #fff
+  border: 1px solid #bbb
+  -webkit-box-shadow: inset 0px 0px 5px #bbb
+  -moz-box-shadow: inset 0px 0px 5px #bbb
+  box-shadow: inset 0px 0px 5px #bbb
+  padding: 15px
+  font-weight: normal
+  text-transform: uppercase
+  color: #999
+  font:
+    size: 14px
+    
+#config
+  float: left
+  width: 500px
+  
+
+
 /* Edit and Download Buttons
 
-#edit-link, #download-link
+#buttons
+  display: block
+  background: green
+
+#edit-link, #download-link, #schematic-link
   display:block
-  width: 220px
-  float: right
+  width: 240px
+  float: left
   padding: 15px 15px
   color: #fff
   text-align: center
-  margin-left: 10px
+  margin: 0 auto
 
   strong
-    text-transform: uppercase
-  
-  p
-    padding-top: 0.3em
     font:
-      size: 13px
+      size: 20px
       
-#edit-link
+#download-link
   background: #e75f32
   -webkit-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
   -moz-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
   box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
   border: 1px solid #d73527
   text-shadow: -1px -1px 0 #d73527
+  margin-right: 40px
   
   &:hover
     background: #ed6c33
 
-#download-link
+#edit-link
   background: #3769ad
   -webkit-box-shadow: -1px 1px 0px #274a94, -2px 2px 0px #274a94
   -moz-box-shadow: -1px 1px 0px #274a94, -2px 2px 0px #274a94
@@ -83,29 +121,33 @@ hr
   &:hover
     background: #407ecb
 
-.color
-  width: 40px
-  height: 40px
-  border: 1px solid #000
-  float: left
-  margin-right: 5px
+#schematic-link
+  background: #e4d423
+  -webkit-box-shadow: -1px 1px 0px #d1c100, -2px 2px 0px #d1c100
+  -moz-box-shadow: -1px 1px 0px #d1c100, -2px 2px 0px #d1c100
+  box-shadow: -1px 1px 0px #d1c100, -2px 2px 0px #d1c100
+  border: 1px solid #d1c100
+  text-shadow: -1px -1px 0 #d1c100
+  margin-right: 40px
 
-#inventory
-  display: block
+  &:hover
+    background: #e9da2d
+
+
+/* View Area
+
+#view-area
   clear: both
-  overflow: auto
-  background: #bbb
-  
-  li
-    float: left
+  min-height: 500px
 
 #iso_viewer
   position: relative
-  background: #FFF
+  background: #fff
   border: 1px solid #bbb
   -webkit-box-shadow: inset 0px 0px 5px #bbb
   -moz-box-shadow: inset 0px 0px 5px #bbb
   box-shadow: inset 0px 0px 5px #bbb
+  margin-top: -12px
 
   &.full
     overflow: auto
@@ -114,21 +156,44 @@ hr
   &.fit img
     width: 100%
     
-.controls
+ul.controls
   z-index: 1000
   position: relative
   display: inline-block
-  top: 20px
-  left: 0px
+  top: 32px
+  left: 7px
+  text-transform: uppercase
+  background: #bbb
+  width: 121px
+  border: 1px solid #999
+  font:
+    size: 14px
   
-  .a
-    padding: 10px
-  background: #CCC
-
-#inventory
-  thead
-  td 
-    padding: 4px 10px
+  li
+    float: left
+    text-align: center
     
-  tr:nth-child(even)
-    background: #DDD
+    &:first-child
+      border-right: 1px solid #999
+    
+  a
+    display: block
+    color: #fff
+    width: 60px
+    padding: 5px 0
+    text-shadow: -1px -1px 0 #aaa
+    
+    &:hover
+      background: #ccc
+      
+/* Color palette selectors
+
+.color
+  width: 40px
+  height: 40px
+  border: 1px solid #000
+  float: left
+  margin-right: 5px
+  
+footer
+  clear: both

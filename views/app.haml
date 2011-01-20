@@ -1,11 +1,17 @@
 %div#main
   
   %div#form{:class=>"view"}
+    %h2 Brickify turns your images into bricked out <em>awesome</em>.
+    
+    %div#sample
+      %h3 Sample
+      %img{:src=>'/images/sample.png'}
+    
     %form#config{:action=>"#/view/", :method=>"get"}
       %ul
         %li
           %label{:for => 'url'}
-          %strong Image URL:
+          %strong Image URL
           %ul
             %li
               %input#url{:type => 'text', :name => "url"}
@@ -22,46 +28,40 @@
   %hr
   
   %div#view{:class=>"view", :style=>"display: none;"}
-    %div
-      %h1 Wow, looks great!
-      %p Here's your bricked out image.
-      %ul#buttons
-        %li
-          %a#edit-link
-            %strong Edit Brick Colors
-            %p Tweak your bricked out image with our easy editor.
-        %li
-          %a#download-link{:href=>"#"}
-            %strong Download Instructions
-            %p Get a guide for building your brickified image in real life.
-    %ul#inventory
-
-    %canvas#iso{:width=>"800", :height => '600'}
+    %ul#buttons
+      %li
+        %a#schematic-link{:href => "", :target => '_blank'}
+          %strong Download Schematic
+      %li
+        %a#download-link{:href=>'#'}
+          %strong Printable Inventory
+      %li
+        %a#edit-link
+          %strong Edit Brick Colors      
+      
+    #view-area
+  
+      %canvas#iso{:width=>"800", :height => '600'}
     
-    .controls
-      %a#fit{:href => "#"} Fit
-      %a#full{:href => "#"} Full
-    #iso_viewer.fit
-      %img#out
+      %ul.controls
+        %li
+          %a#fit{:href => "#"} Fit
+        %li
+          %a#full{:href => "#"} Zoom
+      
+      #iso_viewer.fit
+        %img#out
 
   %hr
   
-  %h1 Brick Editor
-
-  %a#schematic_link{:href => "", :target => '_blank'} Schematic
-  
-  %table#inventory
-    %thead
-      %tr
-        %th Color
-        %th Size
-        %th QTY
-    %tbody
-
   %div#edit{:class=>"view", :style=>"display: none;"}
+    %h1 Brick Editor
     %canvas#canvas{:width=>"800", :height => '600'}
     %div{:id => "palette"}
     %a#view-link Save and View
+
+  %footer
+    Footer!
     
 %a{:href => "#/"} Start Over
 
