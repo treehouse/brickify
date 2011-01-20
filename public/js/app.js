@@ -36,7 +36,7 @@
     this.canvas  = this.$canvas[0]
 
 		this.painting = false;
-		this.updatedBlocks = [];
+		this.updatedBlocks = {};
 		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
@@ -149,8 +149,7 @@
       return color;
     },
     
-    
-    
+
     /*
       Determines a block's color using the center pixel
     */
@@ -229,9 +228,86 @@
     
 		updateBlock: function(pixelX, pixelY, color) {
 			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
-			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
-			this.updatedBlocks.push([brickCoordinate[0], brickCoordinate[1], namedColors[this.penColor]])			
-			this.drawBlocks();
+			if (namedColors[this.penColor] != this.colorGrid[brickCoordinate[0]][brickCoordinate[1]]) {
+				this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
+				if (this.updatedBlocks[this.penColor] == null) {
+					this.updatedBlocks[this.penColor] = [];
+				}
+				this.updatedBlocks[this.penColor].push([brickCoordinate[0], brickCoordinate[1]]);
+
+				this.drawBlocks();
+			}
+		},
+		
+		encodeUpdates: function() {
+			return Base64.encode(this.lzw_encode(JSON.stringify(this.updatedBlocks)));
+		},
+		
+		decodeUpdates: function(updates) {
+			updates = Base64.decode(updates);
+			updates = this.lzw_decode(updates);
+			updates = JSON.parse(updates);
+			return updates;
+		},
+		
+		applyUpdates: function(updates) {
+			console.log("Applying updates", updates);
+			this.updatedBlocks = updates;
+		},
+		
+		// LZW-compress a string
+		// http://jsolait.net/, LGPL
+		lzw_encode: function(s) {
+		    var dict = {};
+		    var data = (s + "").split("");
+		    var out = [];
+		    var currChar;
+		    var phrase = data[0];
+		    var code = 256;
+		    for (var i=1; i<data.length; i++) {
+		        currChar=data[i];
+		        if (dict[phrase + currChar] != null) {
+		            phrase += currChar;
+		        }
+		        else {
+		            out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+		            dict[phrase + currChar] = code;
+		            code++;
+		            phrase=currChar;
+		        }
+		    }
+		    out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+		    for (var i=0; i<out.length; i++) {
+		        out[i] = String.fromCharCode(out[i]);
+		    }
+		    return out.join("");
+			},
+
+			// Decompress an LZW-encoded string
+			// http://jsolait.net/, LGPL
+			lzw_decode: function(s) {
+		    var dict = {};
+		    var data = (s + "").split("");
+		    var currChar = data[0];
+		    var oldPhrase = currChar;
+		    var out = [currChar];
+		    var code = 256;
+		    var phrase;
+		    for (var i=1; i<data.length; i++) {
+		        var currCode = data[i].charCodeAt(0);
+		        if (currCode < 256) {
+		            phrase = data[i];
+		        }
+		        else {
+		           phrase = dict[currCode] ? dict[currCode] : (oldPhrase + currChar);
+		        }
+		        out.push(phrase);
+		        currChar = phrase.charAt(0);
+		        dict[code] = oldPhrase + currChar;
+		        code++;
+		        oldPhrase = phrase;
+		    }
+		    return out.join("");
 		},
 
     /*
@@ -239,6 +315,16 @@
     */
     drawBlocks: function(){
       var c, style;
+
+			// apply any updates we have, just in case
+			self = this;
+			if (this.updatedBlocks) {
+				_.each(this.updatedBlocks, function(points, color) {
+					_.each(points, function(point) {
+						self.colorGrid[point[0]][point[1]] = namedColors[color];
+					});
+				});
+			}
 
 			this.canvas.width = this.canvas.width;
 
@@ -349,12 +435,14 @@
   /*
     Renders isometric view based on a colorGrid
   */
-  window.IsoRenderer= function(canvas, sprites, scale){
+  window.IsoRenderer= function(canvas, sprites, scale, brickifier){
     this.$canvas = $(canvas).hide();
     this.canvas  = this.$canvas[0]
     this.ctx     = this.canvas.getContext('2d');
     this.spriteMap = $('<img>').attr('src', sprites).appendTo('body').hide()[0]; 
     this.scaling = scale;
+
+		this.brickifier = brickifier;
   }
   
   _.extend(IsoRenderer.prototype, {
@@ -363,23 +451,22 @@
       Render given colorGrid to self
       If scaling, constrain rendering to canvas width
     */
-    render: function(colorGrid, scaling){
+    render: function(scaling){
       if("undefined" !== typeof scaling){
         this.scaling = scaling;
-      }  
-      this.colorGrid = colorGrid;
+      } 
+			colorGrid = this.brickifier.colorGrid;
+      this.colorGrid = this.brickifier.colorGrid;
+			
+			var yOffset = this.colorGrid.length * 8;
       this.scale();
-      
-     
-      
-      var yOffset = this.colorGrid.length * 8;
       
       for(var x = colorGrid.length - 1; x >= 0; x--){
         for(var y=colorGrid[x].length -1; y >= 0; y--){
           var rgb = colorGrid[x][y],
               offset = isoOffset.apply(null, rgb),
               dx = x*18,
-              dy = yOffset + y*23 - x*8,
+							dy = yOffset + y*23 - x*8,
               dw = SPRITE_WIDTH,
               dh = SPRITE_HEIGHT,
               sx = offset,
@@ -400,7 +487,6 @@
       Also resizes height to rendering proportions
     */
     scale: function(){
-      
       var totalWidth = this.colorGrid.length *18 + 20, // x * 18 + padding
           totalHeight = this.colorGrid.length * 8 + this.colorGrid[0].length * 23 + 20
       
@@ -414,8 +500,6 @@
         this.canvas.height = totalHeight;
         this.canvas.width = totalWidth;
       }
-      
-      
     }
     
     
@@ -496,9 +580,147 @@
       return [h, s, l];
   }
   
-  
-  
-  
+  /**
+	*
+	*  Base64 encode / decode
+	*  http://www.webtoolkit.info/
+	*
+	**/
+	var Base64 = {
+
+		// private property
+		_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+		// public method for encoding
+		encode : function (input) {
+			var output = "";
+			var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+			var i = 0;
+
+			input = Base64._utf8_encode(input);
+
+			while (i < input.length) {
+
+				chr1 = input.charCodeAt(i++);
+				chr2 = input.charCodeAt(i++);
+				chr3 = input.charCodeAt(i++);
+
+				enc1 = chr1 >> 2;
+				enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+				enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+				enc4 = chr3 & 63;
+
+				if (isNaN(chr2)) {
+					enc3 = enc4 = 64;
+				} else if (isNaN(chr3)) {
+					enc4 = 64;
+				}
+
+				output = output +
+				this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+				this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+			}
+
+			return output;
+		},
+
+		// public method for decoding
+		decode : function (input) {
+			var output = "";
+			var chr1, chr2, chr3;
+			var enc1, enc2, enc3, enc4;
+			var i = 0;
+
+			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+			while (i < input.length) {
+
+				enc1 = this._keyStr.indexOf(input.charAt(i++));
+				enc2 = this._keyStr.indexOf(input.charAt(i++));
+				enc3 = this._keyStr.indexOf(input.charAt(i++));
+				enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+				chr1 = (enc1 << 2) | (enc2 >> 4);
+				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+				chr3 = ((enc3 & 3) << 6) | enc4;
+
+				output = output + String.fromCharCode(chr1);
+
+				if (enc3 != 64) {
+					output = output + String.fromCharCode(chr2);
+				}
+				if (enc4 != 64) {
+					output = output + String.fromCharCode(chr3);
+				}
+
+			}
+
+			output = Base64._utf8_decode(output);
+
+			return output;
+
+		},
+
+		// private method for UTF-8 encoding
+		_utf8_encode : function (string) {
+			string = string.replace(/\r\n/g,"\n");
+			var utftext = "";
+
+			for (var n = 0; n < string.length; n++) {
+
+				var c = string.charCodeAt(n);
+
+				if (c < 128) {
+					utftext += String.fromCharCode(c);
+				}
+				else if((c > 127) && (c < 2048)) {
+					utftext += String.fromCharCode((c >> 6) | 192);
+					utftext += String.fromCharCode((c & 63) | 128);
+				}
+				else {
+					utftext += String.fromCharCode((c >> 12) | 224);
+					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+					utftext += String.fromCharCode((c & 63) | 128);
+				}
+
+			}
+
+			return utftext;
+		},
+
+		// private method for UTF-8 decoding
+		_utf8_decode : function (utftext) {
+			var string = "";
+			var i = 0;
+			var c = c1 = c2 = 0;
+
+			while ( i < utftext.length ) {
+
+				c = utftext.charCodeAt(i);
+
+				if (c < 128) {
+					string += String.fromCharCode(c);
+					i++;
+				}
+				else if((c > 191) && (c < 224)) {
+					c2 = utftext.charCodeAt(i+1);
+					string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+					i += 2;
+				}
+				else {
+					c2 = utftext.charCodeAt(i+1);
+					c3 = utftext.charCodeAt(i+2);
+					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+					i += 3;
+				}
+
+			}
+
+			return string;
+		}
+
+	}
   
   
   
@@ -507,23 +729,44 @@
 $(function() {
 	var app = $.sammy('#main', function() {
 		this.brickifier = new Brickifier("#canvas");
-		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png');
-		this.needsUpdate = false;
+		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png', false, this.brickifier);
 		this.url = null;
+		this.isoDirty = false;
+		this.isoRendered = false;
 		
 		this.showView = function(view) {
 			$('.view').hide();
 			$(view).show();
-			
-			console.log(this.brickifier.canvas);
 		};
 		
-		this.updateUrl = function(url) {
+		this.updateData = function(url, updates) {
 			if (this.url != url) {
-				console.log("Updating url!");
 				this.url = url;
 				this.brickifier.initialize('/proxy?url=' + url);
 			}
+			
+			if (updates) {
+				updates = this.brickifier.decodeUpdates(updates);
+				this.brickifier.applyUpdates(updates);
+			}
+		}
+		
+		this.getUrlForAction = function(action) {
+			var url = "#/";
+			
+			if(action) {
+				url += action + "/";
+			}
+			
+			if (this.url) {
+				url += "?url=" + this.url;
+				
+				if (this.brickifier.updatedBlocks) {
+					url += "&updates=" + encodeURIComponent(this.brickifier.encodeUpdates());
+				}
+			}
+			
+			return url;
 		}
 		
 		
@@ -532,48 +775,47 @@ $(function() {
 		});
 		
 		this.get("#/", function() {			
+			this.app.url = "";
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
 		
 		this.get("#/view/", function() {
-			this.app.updateUrl(encodeURIComponent(this.params["url"]));
-			if (this.app.needsUpdate) {
-				this.app.isoRenderer.render(app.brickifier.colorGrid);
-				this.app.needsUpdate = false;
+			self = this;
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			if (this.app.isoDirty == true) {
+				setTimeout(function() { self.app.isoRenderer.render(); }, 0);
+				this.app.isoDirty = false;
 			}
+			
 			this.app.showView("#view");
-			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
+			$('#edit-link').attr("href", this.app.getUrlForAction("edit"));
 		});
 		
-		
-		
 		this.get("#/edit/", function() {
-			this.app.updateUrl(encodeURIComponent(this.params["url"]));
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			this.app.showView("#edit");
-			$('#view-link').attr("href", "#/view/?url=" + this.app.url);
+			$('#view-link').attr("href", this.app.getUrlForAction("view"));
 		});
 	});
 	
-	app.brickifier.bind('change:colorGrid', function() {
-    app.isoRenderer.render(app.brickifier.colorGrid);
-  });
 	app.brickifier.bind('redraw', function() {
-    app.needsUpdate = true;
-  });
-  
+		$('#view-link').attr("href", app.getUrlForAction("view"));
+		app.isoDirty = true;
+		
+		if (app.isoRendered == false) {
+				setTimeout(function() { app.isoRenderer.render(); }, 0);
+				app.isoRendered = true;
+		}
+  });  
   app.isoRenderer.bind('after-render', function(){
 	  refreshPieces(app.brickifier);
-	})
+	});
+	
 	function refreshPieces(brickifier){
-	    console.log('refresh')
-  	  console.log(window.x = brickifier.pieces())
   	  var pieces = brickifier.pieces(),
   	      $inv = $('#inventory').empty();
-
-  	  console.log(pieces)
   	  _.each(pieces, function(value, key){
-  	    console.log(value, key)
   	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
 
