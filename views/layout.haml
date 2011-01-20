@@ -3,15 +3,13 @@
   %head
     %title Brickify
     %link{:rel=>'stylesheet', :href=>'/css/main.css'}
-    %link{:rel=>'stylesheet', :href=>'/css/reset.css'}
     %script{:src => 'js/jquery.js'}
     %script{:src => 'js/underscore.js'}
     %script{:src => 'js/backbone.js'}
+    %script{:src => 'js/sammy.min.js'}
     %script{:src => '/js/app.js'}
     
   %body
-    #wrapper
-      %h1#logo Brickify
-      =yield
+    =yield
     
     
