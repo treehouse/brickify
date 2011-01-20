@@ -37,7 +37,7 @@
     this.ctx     = this.canvas.getContext('2d');
 
 		this.painting = false;
-		this.updatedBlocks = {};
+		this.updatedBlocks = [];
 		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
@@ -62,8 +62,6 @@
 			}
 		});
 		
-    
-    
     this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
@@ -229,19 +227,34 @@
     
 		updateBlock: function(pixelX, pixelY, color) {
 			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
-			if (namedColors[this.penColor] != this.colorGrid[brickCoordinate[0]][brickCoordinate[1]]) {
-				this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
-				if (this.updatedBlocks[this.penColor] == null) {
-					this.updatedBlocks[this.penColor] = [];
-				}
-				this.updatedBlocks[this.penColor].push([brickCoordinate[0], brickCoordinate[1]]);
+			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
 
-				this.drawBlocks();
+			if (this.updatedBlocks[brickCoordinate[0]] == null) {
+				this.updatedBlocks[brickCoordinate[0]] = [];
 			}
+			this.updatedBlocks[brickCoordinate[0]][brickCoordinate[1]] = this.penColor;
+			
+			console.log(this.updatedBlocks);
+
+			this.drawBlocks();
 		},
 		
 		encodeUpdates: function() {
-			return Base64.encode(this.lzw_encode(JSON.stringify(this.updatedBlocks)));
+			var updates = {};
+			for(var x = 0,j=this.updatedBlocks.length; x < j; x++) {
+				if (this.updatedBlocks[x]) {
+					for(var y = 0, k=this.updatedBlocks[x].length; y < k; y++) {
+						if (this.updatedBlocks[x][y]) {
+							if (updates[this.updatedBlocks[x][y]] == null) {
+								updates[this.updatedBlocks[x][y]] = [];
+							}
+							updates[this.updatedBlocks[x][y]].push([x, y]);
+						}
+					}
+				}
+			}
+			
+			return Base64.encode(this.lzw_encode(JSON.stringify(updates)));
 		},
 		
 		decodeUpdates: function(updates) {
@@ -252,8 +265,19 @@
 		},
 		
 		applyUpdates: function(updates) {
-			console.log("Applying updates", updates);
-			this.updatedBlocks = updates;
+			var self = this;
+			_.each(updates, function(points, color) {
+				_.each(points, function(point) {
+					var x = point[0];
+					var y = point[1];
+					
+					if (self.updatedBlocks[x] == null) {
+						self.updatedBlocks[x] = [];
+					}
+					
+					self.updatedBlocks[x][y] = color;
+				});
+			});
 		},
 		
 		// LZW-compress a string
@@ -318,13 +342,16 @@
       var c, style;
 
 			// apply any updates we have, just in case
-			self = this;
 			if (this.updatedBlocks) {
-				_.each(this.updatedBlocks, function(points, color) {
-					_.each(points, function(point) {
-						self.colorGrid[point[0]][point[1]] = namedColors[color];
-					});
-				});
+				for(var x = 0, j = this.updatedBlocks.length; x < j; x++) {
+					if (this.updatedBlocks[x]) {
+						for(var y = 0, k = this.updatedBlocks[x].length; y < k; y++) {
+							if (this.updatedBlocks[x][y]) {
+								this.colorGrid[x][y] = namedColors[this.updatedBlocks[x][y]];
+							}
+						}
+					}
+				}
 			}
 
 			this.canvas.width = this.canvas.width;
