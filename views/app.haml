@@ -1,4 +1,87 @@
 %div#main
+
+  %div#about{:class => "view", :style => "display: none;"}
+    %h2
+      About
+    
+    #video
+      
+      #player
+    
+      #vid_description
+      
+        %h3 What is Brickify?
+        %p Brickify is a web application that allows you to upload images and transform them into plans for building bricks.
+        
+        %h3 Who built this and why?
+        %p
+          Brickify is an app created by Carsonified. It all started during a team building week at our new Orlando, Florida office. We took a fun trip to the local Lego store, and Jim thought it might be fun to build the Carsonified logo in Lego bricks.
+        %p
+          We searched the web, but we couldn't find any web apps that transformed images into lego plans, so we decided to build one ourselves.
+          
+        %h3 How does Brickify work?
+        %p I don't know... Alan, how does Brickify work?
+        
+    
+    #profiles
+
+      .person
+        .picture
+          %img{:src => "images/ryan.jpg"}
+        .info
+          %p.name
+            %strong
+              Ryan Carson,
+            Founder
+          %a{:href => "http://twitter.com/ryancarson", :class => "twitter"}
+            @ryancarson
+
+      .person
+        .picture
+          %img{:src => "images/jim.jpg"}
+        .info
+          %p.name
+            %strong
+              Jim Hoskins,
+            Developer
+          %a{:href => "http://twitter.com/jimrhoskins", :class => "twitter"}
+            @jimrhoskins
+
+      .person
+        .picture
+          %img{:src => "images/allison.jpg"}
+        .info
+          %p.name
+            %strong
+              Allison House,
+            Designer
+          %a{:href => "http://twitter.com/allison_house", :class => "twitter"}
+            @allison_house
+
+      .person
+        .picture
+          %img{:src => "images/alan.jpg"}
+        .info
+          %p.name
+            %strong
+              Alan Johnson,
+            Developer
+          %a{:href => "http://twitter.com/commondream", :class => "twitter"}
+            @commondream
+     
+      .person
+        .picture
+          %img{:src => "images/nick.jpg"}
+        .info
+          %p.name
+            %strong
+              Nick Pettit,
+            Designer
+          %a{:href => "http://twitter.com/nickrp", :class => "twitter"}
+            @nickrp
+            
+
+      
   
   %div#form{:class=>"view"}
     %h2 Brickify turns your images into bricked out <em>awesome</em>.
@@ -28,6 +111,7 @@
   %hr
   
   %div#view{:class=>"view", :style=>"display: none;"}
+
     %ul#buttons
       %li
         %a#schematic-link{:href => "", :target => '_blank'}
@@ -61,7 +145,7 @@
     %a#view-link Save and View
 
   %footer
-    Footer!
+    %a{:href =>"#"} About
     
 %a{:href => "#/"} Start Over
 

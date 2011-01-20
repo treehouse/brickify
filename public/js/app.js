@@ -37,7 +37,7 @@
     this.ctx     = this.canvas.getContext('2d');
 
 		this.painting = false;
-		this.updatedBlocks = {};
+		this.updatedBlocks = [];
 		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
@@ -62,8 +62,6 @@
 			}
 		});
 		
-    
-    
     this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
@@ -229,19 +227,32 @@
     
 		updateBlock: function(pixelX, pixelY, color) {
 			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
-			if (namedColors[this.penColor] != this.colorGrid[brickCoordinate[0]][brickCoordinate[1]]) {
-				this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
-				if (this.updatedBlocks[this.penColor] == null) {
-					this.updatedBlocks[this.penColor] = [];
-				}
-				this.updatedBlocks[this.penColor].push([brickCoordinate[0], brickCoordinate[1]]);
+			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
 
-				this.drawBlocks();
+			if (this.updatedBlocks[brickCoordinate[0]] == null) {
+				this.updatedBlocks[brickCoordinate[0]] = [];
 			}
+			this.updatedBlocks[brickCoordinate[0]][brickCoordinate[1]] = this.penColor;
+
+			this.drawBlocks();
 		},
 		
 		encodeUpdates: function() {
-			return Base64.encode(this.lzw_encode(JSON.stringify(this.updatedBlocks)));
+			var updates = {};
+			for(var x = 0,j=this.updatedBlocks.length; x < j; x++) {
+				if (this.updatedBlocks[x]) {
+					for(var y = 0, k=this.updatedBlocks[x].length; y < k; y++) {
+						if (this.updatedBlocks[x][y]) {
+							if (updates[this.updatedBlocks[x][y]] == null) {
+								updates[this.updatedBlocks[x][y]] = [];
+							}
+							updates[this.updatedBlocks[x][y]].push([x, y]);
+						}
+					}
+				}
+			}
+			
+			return Base64.encode(this.lzw_encode(JSON.stringify(updates)));
 		},
 		
 		decodeUpdates: function(updates) {
@@ -252,8 +263,19 @@
 		},
 		
 		applyUpdates: function(updates) {
-			console.log("Applying updates", updates);
-			this.updatedBlocks = updates;
+			var self = this;
+			_.each(updates, function(points, color) {
+				_.each(points, function(point) {
+					var x = point[0];
+					var y = point[1];
+					
+					if (self.updatedBlocks[x] == null) {
+						self.updatedBlocks[x] = [];
+					}
+					
+					self.updatedBlocks[x][y] = color;
+				});
+			});
 		},
 		
 		// LZW-compress a string
@@ -318,13 +340,16 @@
       var c, style;
 
 			// apply any updates we have, just in case
-			self = this;
 			if (this.updatedBlocks) {
-				_.each(this.updatedBlocks, function(points, color) {
-					_.each(points, function(point) {
-						self.colorGrid[point[0]][point[1]] = namedColors[color];
-					});
-				});
+				for(var x = 0, j = this.updatedBlocks.length; x < j; x++) {
+					if (this.updatedBlocks[x]) {
+						for(var y = 0, k = this.updatedBlocks[x].length; y < k; y++) {
+							if (this.updatedBlocks[x][y]) {
+								this.colorGrid[x][y] = namedColors[this.updatedBlocks[x][y]];
+							}
+						}
+					}
+				}
 			}
 
 			this.canvas.width = this.canvas.width;
@@ -851,24 +876,27 @@ $(function() {
 			return url;
 		}
 		
+		this.before(function() {
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);			
+		});
 		
 		this.get("/", function() {
 			this.redirect("#/");
 		});
 		
-		this.get("#/", function() {			
+		this.get("#/", function() {
 			this.app.url = "";
 			this.app.isoDirty = true;
 			this.app.isoRendered = false;
+			this.app.brickifier.updatedBlcoks = null;
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
 		
 		this.get("#/view/", function() {
-			self = this;
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
-        this.app.isoRenderer.render(); 
+				var self = this;
+        setTimeout(function() { self.app.isoRenderer.render(); }, 0);
         refreshPieces(app.brickifier)
 				this.app.isoDirty = false;
 			}
@@ -878,9 +906,12 @@ $(function() {
 		});
 		
 		this.get("#/edit/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			this.app.showView("#edit");
 			$('#view-link').attr("href", this.app.getUrlForAction("view"));
+		});
+		
+		this.get("#/inventory/", function() {
+			this.app.showView("#inventory");
 		});
 	});
 	
@@ -893,7 +924,6 @@ $(function() {
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
 		app.isoDirty = true;
-		console.log("Marked iso dirty");
 		
 		if (app.isoRendered == false) {
 				setTimeout(function() { app.isoRenderer.render(); }, 0);
@@ -907,7 +937,6 @@ $(function() {
 	
 	
 	function refreshPieces(brickifier){
-	    console.log('refresh')
 	    s.calculate();
 
   	  var pieces = _.flatten(s.rows),
