@@ -34,7 +34,13 @@
       %img#out
     
     %a#schematic_link{:href => "", :target => '_blank'} Schematic
+  
+  %div#edit{:class=>"view", :style=>"display: none;"}
+    %canvas#canvas{:width=>"800", :height => '600'}
+    %div{:id => "palette"}
+    %a#view-link Save and View
     
+  %div#inventory{:class=>"view", :style=>"display: none;"}
     %table#inventory
       %thead
         %tr
@@ -42,11 +48,6 @@
           %th Size
           %th QTY
       %tbody
-  
-  %div#edit{:class=>"view", :style=>"display: none;"}
-    %canvas#canvas{:width=>"800", :height => '600'}
-    %div{:id => "palette"}
-    %a#view-link Save and View
     
 %a{:href => "#/"} Start Over
 

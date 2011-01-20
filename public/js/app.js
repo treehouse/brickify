@@ -878,12 +878,15 @@ $(function() {
 			return url;
 		}
 		
+		this.before(function() {
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);			
+		});
 		
 		this.get("/", function() {
 			this.redirect("#/");
 		});
 		
-		this.get("#/", function() {			
+		this.get("#/", function() {
 			this.app.url = "";
 			this.app.isoDirty = true;
 			this.app.isoRendered = false;
@@ -893,7 +896,6 @@ $(function() {
 		});
 		
 		this.get("#/view/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
         this.app.isoRenderer.render(); 
         refreshPieces(app.brickifier)
@@ -905,9 +907,12 @@ $(function() {
 		});
 		
 		this.get("#/edit/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			this.app.showView("#edit");
 			$('#view-link').attr("href", this.app.getUrlForAction("view"));
+		});
+		
+		this.get("#/inventory/", function() {
+			this.app.showView("#inventory");
 		});
 	});
 	
