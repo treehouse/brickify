@@ -859,12 +859,11 @@ $(function() {
 		});
 		
 		this.get("#/view/", function() {
-			self = this;
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
 				this.app.isoRenderer.render();
 				s.calculate();
-        refreshPieces()
+        refreshPieces();
 				this.app.isoDirty = false;
 			}
 			
