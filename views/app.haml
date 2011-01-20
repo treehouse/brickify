@@ -1,14 +1,30 @@
-%canvas#schematic{:width=>"800", :height => '600'}
-%a#schematic_link{:href => ""} Schematic
 %div#main
-
+  
   %div#form{:class=>"view"}
     %form#config{:action=>"#/view/", :method=>"get"}
-      %label{:for => 'url'} Image URL:
-      %input#url{:type => 'text', :name => "url"}
-      %input{:type => 'submit', :value => "Brickify!"}
-    
+      %ul
+        %li
+          %label{:for => 'url'}
+          %strong Image URL:
+          %ul
+            %li
+              %input#url{:type => 'text', :name => "url"}
+            %li
+              %a{:href=>'http://imgur.com/'} Need to upload your photo?
+        %li
+          Slider
+          %ul
+            %li Less detail, fewer bricks
+            %li More detail, more bricks
+        %li
+          %input{:type => 'submit', :value => "Brickify!"}
+  
+  %hr
+  
   %div#view{:class=>"view", :style=>"display: none;"}
+    %div
+      %h1 Wow, looks great!
+      %p Here's your Brickified photo.
     %canvas#iso{:width=>"800", :height => '600'}
     %a#edit-link Edit
     .controls
@@ -16,7 +32,9 @@
       %a#full{:href => "#"} Full
     #iso_viewer.fit
       %img#out
-      
+    
+    %a#schematic_link{:href => "", :target => '_blank'} Schematic
+    
     %table#inventory
       %thead
         %tr
@@ -31,3 +49,6 @@
     %a#view-link View
     
 %a{:href => "#/"} Start Over
+
+
+%canvas#schematic{:width=>"800", :height => '600'}
