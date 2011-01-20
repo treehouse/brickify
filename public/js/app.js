@@ -616,7 +616,11 @@ $(function() {
 			this.app.updateUrl(encodeURIComponent(this.params["url"]));
 			if (this.app.needsUpdate) {
 				this.app.isoRenderer.render(app.brickifier.colorGrid);
+				s.calculate();
+        console.log("rows", s.rows)
+        refreshPieces()
 				this.app.needsUpdate = false;
+				
 			}
 			this.app.showView("#view");
 			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
@@ -635,9 +639,6 @@ $(function() {
 	
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
-    s.calculate();
-    console.log("rows", s.rows)
-    refreshPieces()
   });
 	app.brickifier.bind('redraw', function() {
     app.needsUpdate = true;
