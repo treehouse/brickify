@@ -63,7 +63,7 @@
 		
     
     
-    this.final_width = 600; //mm
+    this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -463,10 +463,19 @@
     toString: function(){
       return this.color + "-" + this.length;
     }
-  })
+  });
+  
+  (function(){ // Schematic
+    
+    var PADDING = 1,
+    BUMP_HEIGHT = 3,
+    BUMP_WIDTH = 10,
+    CELL_WIDTH = 18,
+    CELL_HEIGHT = 24,
+    ROW_SPREAD = 8;
   
   window.Schematic = function(canvas, brickifier){
-    this.$canvas = $(canvas);
+    this.$canvas = $(canvas).hide();
     this.canvas  = this.$canvas[0];
     this.ctx     = this.canvas.getContext('2d');
     
@@ -485,7 +494,6 @@
         var row = [];
         
         for(c=0; c < cols; ){
-          console.log("calc loop", c, cols)
           var piece = this.getLongestBrick(c, r);
           c+= piece.length;
           row.push(piece);          
@@ -493,7 +501,7 @@
         
         this.rows.push(row);
       }
-      
+      this.render();
     },
     
     getLongestBrick: function(xStart, y){
@@ -506,9 +514,7 @@
           if(BRICK_LENGTHS.indexOf(i) >= 0){
             bar = i;
           }
-          console.log(i, bar, x, y, color, this.colorGrid[x][y])
         }else{
-          console.log('bar', bar)
           break;
         }
       }
@@ -516,7 +522,57 @@
       return new Piece(colorNameLookup[color], bar);
       
     },
+    
+    render: function(){
+      var x=0; y=0, self = this;
+      
+      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
+      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
+      
+      this.ctx.fillStyle = "#CCC"
+      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+      
+      
+      _.each(this.rows, function(row){
+        x=0;
+        
+        _.each(row, function(piece){
+          self.drawPiece(x, y, piece);
+          x+= piece.length;
+        })
+        
+        y++;
+      })
+      
+      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+    },
+    
+    drawPiece: function(xCell, yCell, piece){
+      var ctx = this.ctx,
+          x = CELL_WIDTH * xCell + PADDING,
+          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
+          
+      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
+      
+      ctx.fillRect(
+        x, 
+        y+BUMP_HEIGHT, 
+        piece.length * CELL_WIDTH - (PADDING * 2), 
+        CELL_HEIGHT - BUMP_HEIGHT
+      );
+          
+      for(var i=0; i<piece.length; i++){
+        ctx.fillRect(
+          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
+          y,
+          BUMP_WIDTH,
+          BUMP_HEIGHT
+        )
+      }
+    }
   })
+  
+  })();// Schemtaic
   
   
   
@@ -575,12 +631,13 @@ $(function() {
 		});
 	});
 	
-	window.s = new Schematic("canvas", app.brickifier)
+	window.s = new Schematic("#schematic", app.brickifier)
 	
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
     s.calculate();
     console.log("rows", s.rows)
+    refreshPieces()
   });
 	app.brickifier.bind('redraw', function() {
     app.needsUpdate = true;
@@ -594,14 +651,22 @@ $(function() {
 	
 	function refreshPieces(brickifier){
 	    console.log('refresh')
-  	  console.log(window.x = brickifier.pieces())
-  	  var pieces = brickifier.pieces(),
-  	      $inv = $('#inventory').empty();
+  	  var pieces = _.flatten(s.rows),
+  	      $inv = $('#inventory tbody').empty(),
+  	      counts = {};
+  	      
+  	      
+  	      
+  	  _.each(pieces, function(p){
+  	    var name = p.toString();
+  	    counts[name] ? counts[name]++ : counts[name] = 1;
+  	  })
 
-  	  console.log(pieces)
-  	  _.each(pieces, function(value, key){
-  	    console.log(value, key)
-  	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+
+  	  _.each(counts, function(qty, key){
+  	    console.log(qty, key)
+  	    var parts = key.split("-"), length = parts[1], color= parts[0];
+  	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
 
 

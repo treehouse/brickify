@@ -1,3 +1,5 @@
+%canvas#schematic{:width=>"800", :height => '600'}
+%a#schematic_link{:href => ""} Schematic
 %div#main
 
   %div#form{:class=>"view"}
@@ -15,7 +17,13 @@
     #iso_viewer.fit
       %img#out
       
-    %ul#inventory
+    %table#inventory
+      %thead
+        %tr
+          %th Color
+          %th Size
+          %th QTY
+      %tbody
   
   %div#edit{:class=>"view", :style=>"display: none;"}
     %canvas#canvas{:width=>"800", :height => '600'}
