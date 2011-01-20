@@ -43,15 +43,27 @@
       %a#full{:href => "#"} Full
     #iso_viewer.fit
       %img#out
-      
 
   %hr
   
   %h1 Brick Editor
 
+  %a#schematic_link{:href => "", :target => '_blank'} Schematic
+  
+  %table#inventory
+    %thead
+      %tr
+        %th Color
+        %th Size
+        %th QTY
+    %tbody
+
   %div#edit{:class=>"view", :style=>"display: none;"}
     %canvas#canvas{:width=>"800", :height => '600'}
     %div{:id => "palette"}
-    %a#view-link View
+    %a#view-link Save and View
     
 %a{:href => "#/"} Start Over
+
+
+%canvas#schematic{:width=>"800", :height => '600'}

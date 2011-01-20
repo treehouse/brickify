@@ -33,9 +33,11 @@
   window.Brickifier = function(canvas){
 		var self = this;
     this.$canvas = $(canvas);
-    this.canvas  = this.$canvas[0]
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
 
 		this.painting = false;
+		this.updatedBlocks = {};
 		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
@@ -60,9 +62,9 @@
 			}
 		});
 		
-    this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 600; //mm
+    
+    this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -148,8 +150,7 @@
       return color;
     },
     
-    
-    
+
     /*
       Determines a block's color using the center pixel
     */
@@ -228,8 +229,86 @@
     
 		updateBlock: function(pixelX, pixelY, color) {
 			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
-			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
-			this.drawBlocks();
+			if (namedColors[this.penColor] != this.colorGrid[brickCoordinate[0]][brickCoordinate[1]]) {
+				this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
+				if (this.updatedBlocks[this.penColor] == null) {
+					this.updatedBlocks[this.penColor] = [];
+				}
+				this.updatedBlocks[this.penColor].push([brickCoordinate[0], brickCoordinate[1]]);
+
+				this.drawBlocks();
+			}
+		},
+		
+		encodeUpdates: function() {
+			return Base64.encode(this.lzw_encode(JSON.stringify(this.updatedBlocks)));
+		},
+		
+		decodeUpdates: function(updates) {
+			updates = Base64.decode(updates);
+			updates = this.lzw_decode(updates);
+			updates = JSON.parse(updates);
+			return updates;
+		},
+		
+		applyUpdates: function(updates) {
+			console.log("Applying updates", updates);
+			this.updatedBlocks = updates;
+		},
+		
+		// LZW-compress a string
+		// http://jsolait.net/, LGPL
+		lzw_encode: function(s) {
+		    var dict = {};
+		    var data = (s + "").split("");
+		    var out = [];
+		    var currChar;
+		    var phrase = data[0];
+		    var code = 256;
+		    for (var i=1; i<data.length; i++) {
+		        currChar=data[i];
+		        if (dict[phrase + currChar] != null) {
+		            phrase += currChar;
+		        }
+		        else {
+		            out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+		            dict[phrase + currChar] = code;
+		            code++;
+		            phrase=currChar;
+		        }
+		    }
+		    out.push(phrase.length > 1 ? dict[phrase] : phrase.charCodeAt(0));
+		    for (var i=0; i<out.length; i++) {
+		        out[i] = String.fromCharCode(out[i]);
+		    }
+		    return out.join("");
+			},
+
+			// Decompress an LZW-encoded string
+			// http://jsolait.net/, LGPL
+			lzw_decode: function(s) {
+		    var dict = {};
+		    var data = (s + "").split("");
+		    var currChar = data[0];
+		    var oldPhrase = currChar;
+		    var out = [currChar];
+		    var code = 256;
+		    var phrase;
+		    for (var i=1; i<data.length; i++) {
+		        var currCode = data[i].charCodeAt(0);
+		        if (currCode < 256) {
+		            phrase = data[i];
+		        }
+		        else {
+		           phrase = dict[currCode] ? dict[currCode] : (oldPhrase + currChar);
+		        }
+		        out.push(phrase);
+		        currChar = phrase.charAt(0);
+		        dict[code] = oldPhrase + currChar;
+		        code++;
+		        oldPhrase = phrase;
+		    }
+		    return out.join("");
 		},
 
     /*
@@ -237,6 +316,16 @@
     */
     drawBlocks: function(){
       var c, style;
+
+			// apply any updates we have, just in case
+			self = this;
+			if (this.updatedBlocks) {
+				_.each(this.updatedBlocks, function(points, color) {
+					_.each(points, function(point) {
+						self.colorGrid[point[0]][point[1]] = namedColors[color];
+					});
+				});
+			}
 
 			this.canvas.width = this.canvas.width;
 
@@ -347,12 +436,14 @@
   /*
     Renders isometric view based on a colorGrid
   */
-  window.IsoRenderer= function(canvas, sprites, scale){
+  window.IsoRenderer= function(canvas, sprites, scale, brickifier){
     this.$canvas = $(canvas).hide();
     this.canvas  = this.$canvas[0]
     this.ctx     = this.canvas.getContext('2d');
     this.spriteMap = $('<img>').attr('src', sprites).appendTo('body').hide()[0]; 
     this.scaling = scale;
+
+		this.brickifier = brickifier;
   }
   
   _.extend(IsoRenderer.prototype, {
@@ -361,23 +452,22 @@
       Render given colorGrid to self
       If scaling, constrain rendering to canvas width
     */
-    render: function(colorGrid, scaling){
+    render: function(scaling){
       if("undefined" !== typeof scaling){
         this.scaling = scaling;
-      }  
-      this.colorGrid = colorGrid;
+      } 
+			colorGrid = this.brickifier.colorGrid;
+      this.colorGrid = this.brickifier.colorGrid;
+			
+			var yOffset = this.colorGrid.length * 8;
       this.scale();
-      
-     
-      
-      var yOffset = this.colorGrid.length * 8;
       
       for(var x = colorGrid.length - 1; x >= 0; x--){
         for(var y=colorGrid[x].length -1; y >= 0; y--){
           var rgb = colorGrid[x][y],
               offset = isoOffset.apply(null, rgb),
               dx = x*18,
-              dy = yOffset + y*23 - x*8,
+							dy = yOffset + y*23 - x*8,
               dw = SPRITE_WIDTH,
               dh = SPRITE_HEIGHT,
               sx = offset,
@@ -398,7 +488,6 @@
       Also resizes height to rendering proportions
     */
     scale: function(){
-      
       var totalWidth = this.colorGrid.length *18 + 20, // x * 18 + padding
           totalHeight = this.colorGrid.length * 8 + this.colorGrid[0].length * 23 + 20
       
@@ -412,8 +501,6 @@
         this.canvas.height = totalHeight;
         this.canvas.width = totalWidth;
       }
-      
-      
     }
     
     
@@ -458,70 +545,310 @@
     this.length = length;
   }
   
+  _.extend(Piece.prototype, {
+    toString: function(){
+      return this.color + "-" + this.length;
+    }
+  });
   
+  (function(){ // Schematic
+    
+    var PADDING = 1,
+    BUMP_HEIGHT = 3,
+    BUMP_WIDTH = 10,
+    CELL_WIDTH = 18,
+    CELL_HEIGHT = 24,
+    ROW_SPREAD = 8;
   
-  
-  /**
-   * Converts an RGB color value to HSL. Conversion formula
-   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
-   * Assumes r, g, and b are contained in the set [0, 255] and
-   * returns h, s, and l in the set [0, 1].
-   *
-   * @param   Number  r       The red color value
-   * @param   Number  g       The green color value
-   * @param   Number  b       The blue color value
-   * @return  Array           The HSL representation
-   */
-   //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-  function rgbToHsl(r, g, b){
-      r /= 255, g /= 255, b /= 255;
-      var max = Math.max(r, g, b), min = Math.min(r, g, b);
-      var h, s, l = (max + min) / 2;
-
-      if(max == min){
-          h = s = 0; // achromatic
-      }else{
-          var d = max - min;
-          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-          switch(max){
-              case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-              case g: h = (b - r) / d + 2; break;
-              case b: h = (r - g) / d + 4; break;
-          }
-          h /= 6;
-      }
-
-      return [h, s, l];
+  window.Schematic = function(canvas, brickifier){
+    this.$canvas = $(canvas).hide();
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
+    
+    this.brickifier = brickifier;
+    this.rows = [];
   }
   
-  
-  
-  
-  
-  
-  
+  _.extend(Schematic.prototype, {
+    calculate: function(){
+      this.colorGrid = this.brickifier.colorGrid;
+      var rows = this.colorGrid[0].length,
+          cols = this.colorGrid.length,
+          r, c;
+      this.rows = [];
+      for(r=0; r < rows; r++){
+        var row = [];
+        
+        for(c=0; c < cols; ){
+          var piece = this.getLongestBrick(c, r);
+          c+= piece.length;
+          row.push(piece);          
+        }
+        
+        this.rows.push(row);
+      }
+      var self = this
+      setTimeout(function(){
+        self.render();
+      }, 10)
+
+    },
+    
+    getLongestBrick: function(xStart, y){
+      var color = this.colorGrid[xStart][y].toString(), 
+          x, i=0, bar=0;
+      
+      for(x = xStart; x < this.colorGrid.length ;x++){
+        if(this.colorGrid[x][y].toString() == color){
+          i++;
+          if(BRICK_LENGTHS.indexOf(i) >= 0){
+            bar = i;
+          }
+        }else{
+          break;
+        }
+      }
+		      return new Piece(colorNameLookup[color], bar);
+
+    },
+
+    render: function(){
+      console.log("Schematic Render")
+      var x=0; y=0, self = this;
+
+      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
+      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
+
+      this.ctx.fillStyle = "#CCC"
+      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+
+
+      _.each(this.rows, function(row){
+        x=0;
+
+        _.each(row, function(piece){
+          self.drawPiece(x, y, piece);
+          x+= piece.length;
+        })
+
+        y++;
+      })
+
+      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+      console.log("End of schematic render")
+    },
+
+    drawPiece: function(xCell, yCell, piece){
+      var ctx = this.ctx,
+          x = CELL_WIDTH * xCell + PADDING,
+          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
+
+      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
+
+      ctx.fillRect(
+        x, 
+        y+BUMP_HEIGHT, 
+        piece.length * CELL_WIDTH - (PADDING * 2), 
+        CELL_HEIGHT - BUMP_HEIGHT
+      );
+
+      for(var i=0; i<piece.length; i++){
+        ctx.fillRect(
+          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
+          y,
+          BUMP_WIDTH,
+          BUMP_HEIGHT
+        )
+      }
+    }
+  })
+
+  })();// Schemtaic
+		  
+  /**
+	*
+	*  Base64 encode / decode
+	*  http://www.webtoolkit.info/
+	*
+	**/
+	var Base64 = {
+
+		// private property
+		_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+
+		// public method for encoding
+		encode : function (input) {
+			var output = "";
+			var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+			var i = 0;
+
+			input = Base64._utf8_encode(input);
+
+			while (i < input.length) {
+
+				chr1 = input.charCodeAt(i++);
+				chr2 = input.charCodeAt(i++);
+				chr3 = input.charCodeAt(i++);
+
+				enc1 = chr1 >> 2;
+				enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+				enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+				enc4 = chr3 & 63;
+
+				if (isNaN(chr2)) {
+					enc3 = enc4 = 64;
+				} else if (isNaN(chr3)) {
+					enc4 = 64;
+				}
+
+				output = output +
+				this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+				this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+			}
+
+			return output;
+		},
+
+		// public method for decoding
+		decode : function (input) {
+			var output = "";
+			var chr1, chr2, chr3;
+			var enc1, enc2, enc3, enc4;
+			var i = 0;
+
+			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+			while (i < input.length) {
+
+				enc1 = this._keyStr.indexOf(input.charAt(i++));
+				enc2 = this._keyStr.indexOf(input.charAt(i++));
+				enc3 = this._keyStr.indexOf(input.charAt(i++));
+				enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+				chr1 = (enc1 << 2) | (enc2 >> 4);
+				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+				chr3 = ((enc3 & 3) << 6) | enc4;
+
+				output = output + String.fromCharCode(chr1);
+
+				if (enc3 != 64) {
+					output = output + String.fromCharCode(chr2);
+				}
+				if (enc4 != 64) {
+					output = output + String.fromCharCode(chr3);
+				}
+
+			}
+
+			output = Base64._utf8_decode(output);
+
+			return output;
+
+		},
+
+		// private method for UTF-8 encoding
+		_utf8_encode : function (string) {
+			string = string.replace(/\r\n/g,"\n");
+			var utftext = "";
+
+			for (var n = 0; n < string.length; n++) {
+
+				var c = string.charCodeAt(n);
+
+				if (c < 128) {
+					utftext += String.fromCharCode(c);
+				}
+				else if((c > 127) && (c < 2048)) {
+					utftext += String.fromCharCode((c >> 6) | 192);
+					utftext += String.fromCharCode((c & 63) | 128);
+				}
+				else {
+					utftext += String.fromCharCode((c >> 12) | 224);
+					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+					utftext += String.fromCharCode((c & 63) | 128);
+				}
+
+			}
+
+			return utftext;
+		},
+
+		// private method for UTF-8 decoding
+		_utf8_decode : function (utftext) {
+			var string = "";
+			var i = 0;
+			var c = c1 = c2 = 0;
+
+			while ( i < utftext.length ) {
+
+				c = utftext.charCodeAt(i);
+
+				if (c < 128) {
+					string += String.fromCharCode(c);
+					i++;
+				}
+				else if((c > 191) && (c < 224)) {
+					c2 = utftext.charCodeAt(i+1);
+					string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+					i += 2;
+				}
+				else {
+					c2 = utftext.charCodeAt(i+1);
+					c3 = utftext.charCodeAt(i+2);
+					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+					i += 3;
+				}
+
+			}
+
+			return string;
+		}
+
+	}
 })() ;
 
 $(function() {
 	var app = $.sammy('#main', function() {
 		this.brickifier = new Brickifier("#canvas");
-		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png');
-		this.needsUpdate = false;
+		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png', false, this.brickifier);
 		this.url = null;
+		this.isoDirty = false;
+		this.isoRendered = false;
 		
 		this.showView = function(view) {
 			$('.view').hide();
 			$(view).show();
-			
-			console.log(this.brickifier.canvas);
 		};
 		
-		this.updateUrl = function(url) {
+		this.updateData = function(url, updates) {
 			if (this.url != url) {
-				console.log("Updating url!");
 				this.url = url;
 				this.brickifier.initialize('/proxy?url=' + url);
 			}
+			
+			if (updates) {
+				updates = this.brickifier.decodeUpdates(updates);
+				this.brickifier.applyUpdates(updates);
+			}
+		}
+		
+		this.getUrlForAction = function(action) {
+			var url = "#/";
+			
+			if(action) {
+				url += action + "/";
+			}
+			
+			if (this.url) {
+				url += "?url=" + this.url;
+				
+				if (this.brickifier.updatedBlocks) {
+					url += "&updates=" + encodeURIComponent(this.brickifier.encodeUpdates());
+				}
+			}
+			
+			return url;
 		}
 		
 		
@@ -530,49 +857,74 @@ $(function() {
 		});
 		
 		this.get("#/", function() {			
+			this.app.url = "";
+			this.app.isoDirty = true;
+			this.app.isoRendered = false;
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
 		
 		this.get("#/view/", function() {
-			this.app.updateUrl(encodeURIComponent(this.params["url"]));
-			if (this.app.needsUpdate) {
-				this.app.isoRenderer.render(app.brickifier.colorGrid);
-				this.app.needsUpdate = false;
+			self = this;
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			if (this.app.isoDirty == true) {
+        this.app.isoRenderer.render(); 
+        refreshPieces(app.brickifier)
+				this.app.isoDirty = false;
 			}
+			
 			this.app.showView("#view");
-			$('#edit-link').attr("href", "#/edit/?url=" + this.app.url);
+			$('#edit-link').attr("href", this.app.getUrlForAction("edit"));
 		});
 		
-		
-		
 		this.get("#/edit/", function() {
-			this.app.updateUrl(encodeURIComponent(this.params["url"]));
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			this.app.showView("#edit");
-			$('#view-link').attr("href", "#/view/?url=" + this.app.url);
+			$('#view-link').attr("href", this.app.getUrlForAction("view"));
 		});
 	});
 	
+	window.s = new Schematic("#schematic", app.brickifier)
+	
 	app.brickifier.bind('change:colorGrid', function() {
-    app.isoRenderer.render(app.brickifier.colorGrid);
+		app.isoDirty = true;
   });
+
 	app.brickifier.bind('redraw', function() {
-    app.needsUpdate = true;
-  });
-  
+		$('#view-link').attr("href", app.getUrlForAction("view"));
+		app.isoDirty = true;
+		console.log("Marked iso dirty");
+		
+		if (app.isoRendered == false) {
+				setTimeout(function() { app.isoRenderer.render(); }, 0);
+				app.isoRendered = true;
+		}
+  });  
   app.isoRenderer.bind('after-render', function(){
 	  refreshPieces(app.brickifier);
-	})
+	});
+	
+	
+	
 	function refreshPieces(brickifier){
 	    console.log('refresh')
-  	  console.log(window.x = brickifier.pieces())
-  	  var pieces = brickifier.pieces(),
-  	      $inv = $('#inventory').empty();
+	    s.calculate();
 
-  	  console.log(pieces)
-  	  _.each(pieces, function(value, key){
-  	    console.log(value, key)
-  	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+  	  var pieces = _.flatten(s.rows),
+  	      $inv = $('#inventory tbody').empty(),
+  	      counts = {};
+  	      
+  	      
+  	      
+  	  _.each(pieces, function(p){
+  	    var name = p.toString();
+  	    counts[name] ? counts[name]++ : counts[name] = 1;
+  	  })
+
+
+  	  _.each(counts, function(qty, key){
+  	    var parts = key.split("-"), length = parts[1], color= parts[0];
+  	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
 
 
@@ -619,4 +971,44 @@ $(function(){
     e.preventDefault();
   })
 })
+
+
+
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+ //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgbToHsl(r, g, b){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+}
+
+
+
+
 
