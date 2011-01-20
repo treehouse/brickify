@@ -35,14 +35,31 @@
     this.$canvas = $(canvas);
     this.canvas  = this.$canvas[0]
 
+		this.painting = false;
+		
 		this.$canvas.click(function(event) {
-			console.log("Clicked!");
 			var target = $(event.target);
 			var x = event.pageX - target.offset().left;
 			var y = event.pageY - target.offset().top;
 			
 			self.updateBlock(x, y);
 		});
+		this.$canvas.mousedown(function(event) {
+			this.painting = true;
+		});
+		this.$canvas.mouseup(function(event) {
+			this.painting = false;
+		});
+		this.$canvas.mousemove(function(event) {
+			if (this.painting) {
+				var target = $(event.target);
+				var x = event.pageX - target.offset().left;
+				var y = event.pageY - target.offset().top;
+			
+				self.updateBlock(x, y);
+			}
+		});
+		
     this.ctx     = this.canvas.getContext('2d');
     
     this.final_width = 1000; //mm
