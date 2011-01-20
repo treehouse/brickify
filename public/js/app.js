@@ -33,7 +33,8 @@
   window.Brickifier = function(canvas){
 		var self = this;
     this.$canvas = $(canvas);
-    this.canvas  = this.$canvas[0]
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
 
 		this.painting = false;
 		
@@ -60,7 +61,7 @@
 			}
 		});
 		
-    this.ctx     = this.canvas.getContext('2d');
+    
     
     this.final_width = 600; //mm
   
@@ -458,43 +459,64 @@
     this.length = length;
   }
   
+  _.extend(Piece.prototype, {
+    toString: function(){
+      return this.color + "-" + this.length;
+    }
+  })
   
-  
-  
-  /**
-   * Converts an RGB color value to HSL. Conversion formula
-   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
-   * Assumes r, g, and b are contained in the set [0, 255] and
-   * returns h, s, and l in the set [0, 1].
-   *
-   * @param   Number  r       The red color value
-   * @param   Number  g       The green color value
-   * @param   Number  b       The blue color value
-   * @return  Array           The HSL representation
-   */
-   //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-  function rgbToHsl(r, g, b){
-      r /= 255, g /= 255, b /= 255;
-      var max = Math.max(r, g, b), min = Math.min(r, g, b);
-      var h, s, l = (max + min) / 2;
-
-      if(max == min){
-          h = s = 0; // achromatic
-      }else{
-          var d = max - min;
-          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-          switch(max){
-              case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-              case g: h = (b - r) / d + 2; break;
-              case b: h = (r - g) / d + 4; break;
-          }
-          h /= 6;
-      }
-
-      return [h, s, l];
+  window.Schematic = function(canvas, brickifier){
+    this.$canvas = $(canvas);
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
+    
+    this.brickifier = brickifier;
+    this.rows = [];
   }
   
-  
+  _.extend(Schematic.prototype, {
+    calculate: function(){
+      this.colorGrid = this.brickifier.colorGrid;
+      var rows = this.colorGrid[0].length,
+          cols = this.colorGrid.length,
+          r, c;
+          
+      for(r=0; r < rows; r++){
+        var row = [];
+        
+        for(c=0; c < cols; ){
+          console.log("calc loop", c, cols)
+          var piece = this.getLongestBrick(c, r);
+          c+= piece.length;
+          row.push(piece);          
+        }
+        
+        this.rows.push(row);
+      }
+      
+    },
+    
+    getLongestBrick: function(xStart, y){
+      var color = this.colorGrid[xStart][y].toString(), 
+          x, i=0, bar=0;
+      
+      for(x = xStart; x < this.colorGrid.length ;x++){
+        if(this.colorGrid[x][y].toString() == color){
+          i++;
+          if(BRICK_LENGTHS.indexOf(i) >= 0){
+            bar = i;
+          }
+          console.log(i, bar, x, y, color, this.colorGrid[x][y])
+        }else{
+          console.log('bar', bar)
+          break;
+        }
+      }
+      
+      return new Piece(colorNameLookup[color], bar);
+      
+    },
+  })
   
   
   
@@ -553,8 +575,12 @@ $(function() {
 		});
 	});
 	
+	window.s = new Schematic("canvas", app.brickifier)
+	
 	app.brickifier.bind('change:colorGrid', function() {
     app.isoRenderer.render(app.brickifier.colorGrid);
+    s.calculate();
+    console.log("rows", s.rows)
   });
 	app.brickifier.bind('redraw', function() {
     app.needsUpdate = true;
@@ -563,6 +589,9 @@ $(function() {
   app.isoRenderer.bind('after-render', function(){
 	  refreshPieces(app.brickifier);
 	})
+	
+	
+	
 	function refreshPieces(brickifier){
 	    console.log('refresh')
   	  console.log(window.x = brickifier.pieces())
@@ -619,4 +648,44 @@ $(function(){
     e.preventDefault();
   })
 })
+
+
+
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+ //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgbToHsl(r, g, b){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+}
+
+
+
+
 
