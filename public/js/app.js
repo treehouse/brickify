@@ -561,7 +561,7 @@
     ROW_SPREAD = 8;
   
   window.Schematic = function(canvas, brickifier){
-    this.$canvas = $(canvas);
+    this.$canvas = $(canvas).hide();
     this.canvas  = this.$canvas[0];
     this.ctx     = this.canvas.getContext('2d');
     
@@ -575,7 +575,7 @@
       var rows = this.colorGrid[0].length,
           cols = this.colorGrid.length,
           r, c;
-          
+      this.rows = [];
       for(r=0; r < rows; r++){
         var row = [];
         
@@ -587,7 +587,11 @@
         
         this.rows.push(row);
       }
-      this.render();
+      var self = this
+      setTimeout(function(){
+        self.render();
+      }, 10)
+
     },
     
     getLongestBrick: function(xStart, y){
@@ -631,6 +635,7 @@
       })
 
       $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+      console.log("End of schematic render")
     },
 
     drawPiece: function(xCell, yCell, piece){
