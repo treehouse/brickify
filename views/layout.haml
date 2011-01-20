@@ -2,19 +2,28 @@
 %html
   %head
     %title Brickify
-    %link{:rel=>'stylesheet', :href=>'/css/main.css'}
     %link{:rel=>'stylesheet', :href=>'/css/reset.css'}
-    
+    %link{:rel=>'stylesheet', :href=>'/css/fontface.css'}
+    %link{:rel=>'stylesheet', :href=>'/css/main.css'}
     %script{:src => 'js/jquery.js'}
     %script{:src => 'js/dragscrollable.js'}
     %script{:src => 'js/underscore.js'}
     %script{:src => 'js/backbone.js'}
     %script{:src => 'js/sammy.min.js'}
     %script{:src => '/js/app.js'}
+    <!--[if IE]>
+    %script{:src => 'http://html5shiv.googlecode.com/svn/trunk/html5.js'}
+    <![endif]-->
+    <!--[if lt IE 9]>
+    %script{:src => 'http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js'}
+    <![endif]-->
 
   %body
     #wrapper
-      %h1#logo Brickify
+      %header
+        %a#logo{:href=>'/'}
+          %h1 Brickify
+        %h2#description Brickify turns your images into bricked out awesome.
       =yield
 
     

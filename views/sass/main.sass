@@ -1,17 +1,41 @@
 body
-  background: url('/images/bg.png')
+  background: url('/images/bg.png') top center
+  margin-top: 30px
+  font:
+    family: "Proxima Nova", arial, "sans-serif"
 
 #wrapper
   width: 960px
   margin: 0 auto
-  
+
+/* Header
+
+header
+  overflow: auto
+
 #logo
+  display: block
+  float: left
   width: 330px
   height: 0
   padding-top: 50px
   overflow: hidden
   background: url('/images/brickify.png') no-repeat
   
+#description
+  display: block
+  float: right
+
+#main
+  background-color: #eee
+  -webkit-box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
+  -moz-box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
+  box-shadow: -1px 1px 0px #ddd, -2px 2px 0px #ddd
+  border: 1px solid #ddd
+  padding: 15px
+  margin-top: 30px
+
+
 .color
   width: 40px
   height: 40px
@@ -22,7 +46,10 @@ body
 #iso_viewer
   position: relative
   background: #FFF
-  border: solid 2px #000
+  border: 1px solid #bbb
+  -webkit-box-shadow: inset 0px 0px 5px #bbb
+  -moz-box-shadow: inset 0px 0px 5px #bbb
+  box-shadow: inset 0px 0px 5px #bbb
 
   &.full
     overflow: auto
@@ -41,3 +68,11 @@ body
   .a
     padding: 10px
   background: #CCC
+
+#inventory
+  thead
+  td 
+    padding: 4px 10px
+    
+  tr:nth-child(even)
+    background: #DDD

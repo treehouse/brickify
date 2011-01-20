@@ -33,7 +33,8 @@
   window.Brickifier = function(canvas){
 		var self = this;
     this.$canvas = $(canvas);
-    this.canvas  = this.$canvas[0]
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
 
 		this.painting = false;
 		this.updatedBlocks = {};
@@ -61,9 +62,9 @@
 			}
 		});
 		
-    this.ctx     = this.canvas.getContext('2d');
     
-    this.final_width = 600; //mm
+    
+    this.final_width = 1000; //mm
   
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
@@ -544,42 +545,120 @@
     this.length = length;
   }
   
+  _.extend(Piece.prototype, {
+    toString: function(){
+      return this.color + "-" + this.length;
+    }
+  });
   
+  (function(){ // Schematic
+    
+    var PADDING = 1,
+    BUMP_HEIGHT = 3,
+    BUMP_WIDTH = 10,
+    CELL_WIDTH = 18,
+    CELL_HEIGHT = 24,
+    ROW_SPREAD = 8;
   
-  
-  /**
-   * Converts an RGB color value to HSL. Conversion formula
-   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
-   * Assumes r, g, and b are contained in the set [0, 255] and
-   * returns h, s, and l in the set [0, 1].
-   *
-   * @param   Number  r       The red color value
-   * @param   Number  g       The green color value
-   * @param   Number  b       The blue color value
-   * @return  Array           The HSL representation
-   */
-   //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-  function rgbToHsl(r, g, b){
-      r /= 255, g /= 255, b /= 255;
-      var max = Math.max(r, g, b), min = Math.min(r, g, b);
-      var h, s, l = (max + min) / 2;
-
-      if(max == min){
-          h = s = 0; // achromatic
-      }else{
-          var d = max - min;
-          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-          switch(max){
-              case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-              case g: h = (b - r) / d + 2; break;
-              case b: h = (r - g) / d + 4; break;
-          }
-          h /= 6;
-      }
-
-      return [h, s, l];
+  window.Schematic = function(canvas, brickifier){
+    this.$canvas = $(canvas).hide();
+    this.canvas  = this.$canvas[0];
+    this.ctx     = this.canvas.getContext('2d');
+    
+    this.brickifier = brickifier;
+    this.rows = [];
   }
   
+  _.extend(Schematic.prototype, {
+    calculate: function(){
+      this.colorGrid = this.brickifier.colorGrid;
+      var rows = this.colorGrid[0].length,
+          cols = this.colorGrid.length,
+          r, c;
+          
+      for(r=0; r < rows; r++){
+        var row = [];
+        
+        for(c=0; c < cols; ){
+          var piece = this.getLongestBrick(c, r);
+          c+= piece.length;
+          row.push(piece);          
+        }
+        
+        this.rows.push(row);
+      }
+      this.render();
+    },
+    
+    getLongestBrick: function(xStart, y){
+      var color = this.colorGrid[xStart][y].toString(), 
+          x, i=0, bar=0;
+      
+      for(x = xStart; x < this.colorGrid.length ;x++){
+        if(this.colorGrid[x][y].toString() == color){
+          i++;
+          if(BRICK_LENGTHS.indexOf(i) >= 0){
+            bar = i;
+          }
+        }else{
+          break;
+        }
+      }
+		      return new Piece(colorNameLookup[color], bar);
+
+		    },
+
+		    render: function(){
+		      var x=0; y=0, self = this;
+
+		      this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
+		      this.canvas.height = (CELL_HEIGHT + ROW_SPREAD) * (this.colorGrid[0].length)
+
+		      this.ctx.fillStyle = "#CCC"
+		      this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+
+
+		      _.each(this.rows, function(row){
+		        x=0;
+
+		        _.each(row, function(piece){
+		          self.drawPiece(x, y, piece);
+		          x+= piece.length;
+		        })
+
+		        y++;
+		      })
+
+		      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+		    },
+
+		    drawPiece: function(xCell, yCell, piece){
+		      var ctx = this.ctx,
+		          x = CELL_WIDTH * xCell + PADDING,
+		          y = (CELL_HEIGHT + PADDING * ROW_SPREAD) * (yCell ) 
+
+		      ctx.fillStyle = "rgb("+ namedColors[piece.color] +")"
+
+		      ctx.fillRect(
+		        x, 
+		        y+BUMP_HEIGHT, 
+		        piece.length * CELL_WIDTH - (PADDING * 2), 
+		        CELL_HEIGHT - BUMP_HEIGHT
+		      );
+
+		      for(var i=0; i<piece.length; i++){
+		        ctx.fillRect(
+		          x + (CELL_WIDTH * i) + (CELL_WIDTH - BUMP_WIDTH)/2 - PADDING,
+		          y,
+		          BUMP_WIDTH,
+		          BUMP_HEIGHT
+		        )
+		      }
+		    }
+		  })
+
+		})();// Schemtaic
+		  
   /**
 	*
 	*  Base64 encode / decode
@@ -721,9 +800,6 @@
 		}
 
 	}
-  
-  
-  
 })() ;
 
 $(function() {
@@ -785,6 +861,8 @@ $(function() {
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
 				setTimeout(function() { self.app.isoRenderer.render(); }, 0);
+				s.calculate();
+        refreshPieces()
 				this.app.isoDirty = false;
 			}
 			
@@ -799,6 +877,12 @@ $(function() {
 		});
 	});
 	
+	window.s = new Schematic("#schematic", app.brickifier)
+	
+	app.brickifier.bind('change:colorGrid', function() {
+    app.isoRenderer.render(app.brickifier.colorGrid);
+  });
+
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
 		app.isoDirty = true;
@@ -812,11 +896,26 @@ $(function() {
 	  refreshPieces(app.brickifier);
 	});
 	
+	
+	
 	function refreshPieces(brickifier){
-  	  var pieces = brickifier.pieces(),
-  	      $inv = $('#inventory').empty();
-  	  _.each(pieces, function(value, key){
-  	    $('<li><div class="brick"></div>'+value+' x '+key+'</li>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+	    console.log('refresh')
+  	  var pieces = _.flatten(s.rows),
+  	      $inv = $('#inventory tbody').empty(),
+  	      counts = {};
+  	      
+  	      
+  	      
+  	  _.each(pieces, function(p){
+  	    var name = p.toString();
+  	    counts[name] ? counts[name]++ : counts[name] = 1;
+  	  })
+
+
+  	  _.each(counts, function(qty, key){
+  	    console.log(qty, key)
+  	    var parts = key.split("-"), length = parts[1], color= parts[0];
+  	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
 
 
@@ -863,4 +962,44 @@ $(function(){
     e.preventDefault();
   })
 })
+
+
+
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+ //http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+function rgbToHsl(r, g, b){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+}
+
+
+
+
 
