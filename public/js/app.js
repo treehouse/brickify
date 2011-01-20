@@ -233,8 +233,6 @@
 				this.updatedBlocks[brickCoordinate[0]] = [];
 			}
 			this.updatedBlocks[brickCoordinate[0]][brickCoordinate[1]] = this.penColor;
-			
-			console.log(this.updatedBlocks);
 
 			this.drawBlocks();
 		},
@@ -897,7 +895,8 @@ $(function() {
 		
 		this.get("#/view/", function() {
 			if (this.app.isoDirty == true) {
-        this.app.isoRenderer.render(); 
+				var self = this;
+        setTimeout(function() { self.app.isoRenderer.render(); }, 0);
         refreshPieces(app.brickifier)
 				this.app.isoDirty = false;
 			}
@@ -925,7 +924,6 @@ $(function() {
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
 		app.isoDirty = true;
-		console.log("Marked iso dirty");
 		
 		if (app.isoRendered == false) {
 				setTimeout(function() { app.isoRenderer.render(); }, 0);
@@ -939,7 +937,6 @@ $(function() {
 	
 	
 	function refreshPieces(brickifier){
-	    console.log('refresh')
 	    s.calculate();
 
   	  var pieces = _.flatten(s.rows),
