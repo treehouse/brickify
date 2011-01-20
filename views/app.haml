@@ -24,18 +24,30 @@
   %div#view{:class=>"view", :style=>"display: none;"}
     %div
       %h1 Wow, looks great!
-      %p Here's your Brickified photo.
+      %p Here's your bricked out image.
+      %ul#buttons
+        %li
+          %a#edit-link
+            %strong Edit Brick Colors
+            %p Tweak your bricked out image with our easy editor.
+        %li
+          %a#download-link{:href=>"#"}
+            %strong Download Instructions
+            %p Get a guide for building your brickified image in real life.
+    %ul#inventory
+
     %canvas#iso{:width=>"800", :height => '600'}
-    %a#edit-link Edit
+    
     .controls
       %a#fit{:href => "#"} Fit
       %a#full{:href => "#"} Full
     #iso_viewer.fit
       %img#out
       
-    %ul#inventory
 
   %hr
+  
+  %h1 Brick Editor
 
   %div#edit{:class=>"view", :style=>"display: none;"}
     %canvas#canvas{:width=>"800", :height => '600'}

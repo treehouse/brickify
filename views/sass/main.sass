@@ -3,15 +3,20 @@ body
   margin-top: 30px
   font:
     family: "Proxima Nova", arial, "sans-serif"
+    size: 16px
+  line-height: 1.25em
+    
+a
+  text-decoration: none
 
+hr
+  display: none
+  
 #wrapper
   width: 960px
   margin: 0 auto
 
 /* Header
-
-header
-  overflow: auto
 
 #logo
   display: block
@@ -21,6 +26,7 @@ header
   padding-top: 50px
   overflow: hidden
   background: url('/images/brickify.png') no-repeat
+  margin-bottom: 30px
   
 #description
   display: block
@@ -34,7 +40,48 @@ header
   border: 1px solid #ddd
   padding: 15px
   margin-top: 30px
+  clear: both
 
+/* Edit and Download Buttons
+
+#edit-link, #download-link
+  display:block
+  width: 220px
+  float: right
+  padding: 15px 15px
+  color: #fff
+  text-align: center
+  margin-left: 10px
+
+  strong
+    text-transform: uppercase
+  
+  p
+    padding-top: 0.3em
+    font:
+      size: 13px
+      
+#edit-link
+  background: #e75f32
+  -webkit-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  -moz-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  border: 1px solid #d73527
+  text-shadow: -1px -1px 0 #d73527
+  
+  &:hover
+    background: #ed6c33
+
+#download-link
+  background: #3769ad
+  -webkit-box-shadow: -1px 1px 0px #274a94, -2px 2px 0px #274a94
+  -moz-box-shadow: -1px 1px 0px #274a94, -2px 2px 0px #274a94
+  box-shadow: -1px 1px 0px #274a94, -2px 2px 0px #274a94
+  border: 1px solid #274a94
+  text-shadow: -1px -1px 0 #274a94
+  
+  &:hover
+    background: #407ecb
 
 .color
   width: 40px
@@ -42,7 +89,16 @@ header
   border: 1px solid #000
   float: left
   margin-right: 5px
+
+#inventory
+  display: block
+  clear: both
+  overflow: auto
+  background: #bbb
   
+  li
+    float: left
+
 #iso_viewer
   position: relative
   background: #FFF
@@ -63,7 +119,7 @@ header
   position: relative
   display: inline-block
   top: 20px
-  left: -20px
+  left: 0px
   
   .a
     padding: 10px
