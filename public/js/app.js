@@ -882,11 +882,7 @@ $(function() {
 	window.s = new Schematic("#schematic", app.brickifier)
 	
 	app.brickifier.bind('change:colorGrid', function() {
-<<<<<<< HEAD
-    app.isoRenderer.render();
-=======
 		app.isoDirty = true;
->>>>>>> 6ec8c05e4ef5794a61985076fd85b3048d0badf4
   });
 
 	app.brickifier.bind('redraw', function() {
