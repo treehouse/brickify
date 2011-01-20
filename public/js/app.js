@@ -36,6 +36,7 @@
     this.canvas  = this.$canvas[0]
 
 		this.painting = false;
+		this.updatedBlocks = [];
 		
 		this.$canvas.click(function(event) {
 			var target = $(event.target);
@@ -229,6 +230,7 @@
 		updateBlock: function(pixelX, pixelY, color) {
 			var brickCoordinate = this.pixelToBrick(pixelX, pixelY);
 			this.colorGrid[brickCoordinate[0]][brickCoordinate[1]] = namedColors[this.penColor];
+			this.updatedBlocks.push([brickCoordinate[0], brickCoordinate[1], namedColors[this.penColor]])			
 			this.drawBlocks();
 		},
 
