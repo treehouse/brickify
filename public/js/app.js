@@ -852,6 +852,8 @@ $(function() {
 		
 		this.get("#/", function() {			
 			this.app.url = "";
+			this.app.isoDirty = true;
+			this.app.isoRendered = false;
 			$('#url').val(this.params["url"]);
 			this.app.showView("#form");
 		});
@@ -860,7 +862,7 @@ $(function() {
 			self = this;
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			if (this.app.isoDirty == true) {
-				setTimeout(function() { self.app.isoRenderer.render(); }, 0);
+				this.app.isoRenderer.render();
 				s.calculate();
         refreshPieces()
 				this.app.isoDirty = false;
@@ -880,12 +882,13 @@ $(function() {
 	window.s = new Schematic("#schematic", app.brickifier)
 	
 	app.brickifier.bind('change:colorGrid', function() {
-    app.isoRenderer.render(app.brickifier.colorGrid);
+		app.isoDirty = true;
   });
 
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
 		app.isoDirty = true;
+		console.log("Marked iso dirty");
 		
 		if (app.isoRendered == false) {
 				setTimeout(function() { app.isoRenderer.render(); }, 0);
