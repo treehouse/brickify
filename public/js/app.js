@@ -844,6 +844,13 @@ $(function() {
 		this.showView = function(view) {
 			$('.view').hide();
 			$(view).show();
+			
+			if (view == "#inventory" || view == "#view") {
+				$('#buttons').show();
+			}
+			else {
+				$('#buttons').hide();
+			}
 		};
 		
 		this.updateData = function(url, updates) {
@@ -921,6 +928,7 @@ $(function() {
 		this.get("#/inventory/", function() {
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			
+			$('#back').attr("href", this.app.getUrlForAction("view"));
 			this.app.showView("#inventory");
 		});
 		

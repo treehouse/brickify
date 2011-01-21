@@ -1,5 +1,15 @@
 %div#main
 
+  %ul#buttons{:style => "display: none;"}
+    %li
+      %a#schematic-link{:href => "", :target => '_blank'}
+        %strong Download Schematic
+    %li
+      %a#download-link{:href=>'#'}
+        %strong Printable Inventory
+    %li
+      %a#edit-link
+        %strong Edit Brick Colors
 
   %div#form{:class=>"view"}
     
@@ -25,25 +35,10 @@
             %li More detail, more bricks
         %li
           %input{:type => 'submit', :value => "Brickify!"}
-  
-        <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like show_faces="false" width="450"></fb:like>
-    
-        <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="carsonified" data-related="thinkvitamin">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
     
   %hr
   
-  %div#view{:class=>"view", :style=>"display: none;"}
-
-    %ul#buttons
-      %li
-        %a#schematic-link{:href => "", :target => '_blank'}
-          %strong Download Schematic
-      %li
-        %a#download-link{:href=>'#'}
-          %strong Printable Inventory
-      %li
-        %a#edit-link
-          %strong Edit Brick Colors      
+  %div#view{:class=>"view", :style=>"display: none;"}   
       
     #view-area
   
@@ -69,12 +64,13 @@
   %hr
   
   %div#inventory{:class=>"view", :style=>"display: none;"}
-    %table#inventory
+    %a#back &larr; Back to viewer
+    %table#inventory-table
       %thead
         %tr
           %th Color
           %th Size
-          %th QTY
+          %th Quantity
       %tbody
 
   
@@ -85,7 +81,7 @@
     #video
 
       #player
-        %iframe{:src => "http://player.vimeo.com/video/19018711?title=0&amp;byline=0&amp;portrait=0", :width => "600", :height => "338", :frameborder => "0"}
+        %iframe{:src => "http://player.vimeo.com/video/19018711?title=0&amp;byline=0&amp;portrait=0", :width => "600", :height => "342", :frameborder => "0"}
 
     #profiles
 
@@ -153,9 +149,9 @@
 
       %h3 Who built this and why?
       %p
-        Brickify is an app created by Carsonified. It all started during a team building week at our new Orlando, Florida office. We took a fun trip to the local Lego store, and Jim thought it might be fun to build the Carsonified logo in Lego bricks.
+        Brickify is an app created by <a href="http://www.carsonified.com">Carsonified</a>. It all started during a team building week at our new Orlando, Florida office. We took a fun trip to the local LEGO store, and Jim thought it might be fun to build the Carsonified logo in Lego bricks.
       %p
-        We searched the web, but we couldn't find any web apps that transformed images into lego plans, so we decided to build one ourselves.
+        We searched the web, but we couldn't find any web apps that transformed images into LEGO plans, so we decided to build one ourselves.
 
       %h3 How does Brickify work?
       %p 
@@ -166,14 +162,23 @@
         and 
         %a{:href => "http://documentcloud.github.com/underscore/"} Underscore.js
         to glue everything together.
+        
+      %h3 Want to learn how to make apps like this?
+      %p We're not only web professionals&mdash;we're teachers, too! Our team runs <a href="http://membership.thinkvitamin.com">Think Vitamin Membership</a>, an online training facility for web designers and developers. Whether you're just getting started or want to stay on the cutting edge, our video library contains hundreds of high quality tutorials to teach you everything you need to know.
+
+  .clear
 
 %footer
   %a#about-link{:href => "#/about/"}
     %img{:src => "/images/team.jpg"}
     %p
       %strong Brickify
-      was created by the Carsonified Level Up team during a team building week in the Orlando office.
+      was created by the Carsonified Think Vitamin team during a team building week in the Orlando office.
       %strong.link Learn more about Brickify and the team &rarr;
+  %div#social
+    <iframe src="http://www.facebook.com/plugins/like.php?href=brickify.com&amp;layout=standard&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>
+  
+    <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="carsonified" data-related="thinkvitamin">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
   
 
 %canvas#schematic{:width=>"800", :height => '600'}
