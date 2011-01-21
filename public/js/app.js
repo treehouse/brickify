@@ -659,7 +659,7 @@
         y++;
       })
 
-      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+      $('#schematic-link').attr('href', this.canvas.toDataURL('image/png'));
       console.log("End of schematic render")
     },
 
@@ -933,6 +933,7 @@ $(function() {
 
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
+		$('#download-link').attr("href", app.getUrlForAction("inventory"));
 		app.isoDirty = true;
 		
 		if (app.isoRendered == false) {
