@@ -344,12 +344,11 @@ footer
   h2
     font-weight: bold
     font-size: 2em
-    margin-bottom: 15px
+    margin-bottom: 1em
   
   #video
     float: left
     width: 600px
-    margin-right: 15px
     
     #player
       width: 600px
@@ -361,26 +360,36 @@ footer
     h3
       font-weight: bold
       font-size: 1.5em
-      margin-bottom: 12px
+      margin-top: 1em
+      margin-bottom: .5em
     
     p
-      margin-bottom: 24px
+      margin-bottom: .75em
     
   
   #profiles
     float: left
-    width: 283px
-    height: 338px
+    width: 298px
+    background: #9cb7dc
 
     .person
       float: left
-      background: #ddd
       width: 100%
-      margin-bottom: 25px
-
+      padding-bottom: 10px
+      margin-bottom: 10px
+      border-bottom: 1px solid #3769ad
+      
+      &:first-child
+        padding-top: 10px
+      
+      &:last-child
+        margin-bottom: 0
+        border-bottom: 0
+      
       .picture
         width: 48px
         height: 48px
+        padding-left: 10px
         float: left
         margin-right: 15px
       
@@ -389,7 +398,8 @@ footer
         margin-top: 5px
     
       .name
-        font-size: 1.05em
+        font-size: .95em
 
       .twitter
         font-weight: bold
+        font-size: .95em
