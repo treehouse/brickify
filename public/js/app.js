@@ -80,7 +80,7 @@
     /* Load img src, and async trigger this.process() */
     initialize: function(img){
       var self = this;
-      this.img = $('<img>').load(function(){        
+      this.img = $('<img>').load(function() {        
         setTimeout(function() { self.process() }, 0);
       }).attr('src', img).appendTo('body').hide()[0];
     },
@@ -480,10 +480,10 @@
     render: function(scaling){
       if("undefined" !== typeof scaling){
         this.scaling = scaling;
-      } 
+      }
 			colorGrid = this.brickifier.colorGrid;
       this.colorGrid = this.brickifier.colorGrid;
-			
+
 			var yOffset = this.colorGrid.length * 8;
       this.scale();
       
@@ -659,7 +659,7 @@
         y++;
       })
 
-      $('#schematic_link').attr('href', this.canvas.toDataURL('image/png'));
+      $('#schematic-link').attr('href', this.canvas.toDataURL('image/png'));
       console.log("End of schematic render")
     },
 
@@ -847,7 +847,15 @@ $(function() {
 		};
 		
 		this.updateData = function(url, updates) {
-			if (this.url != url) {
+			console.log("URL", url);
+			
+			if (typeof url == "undefined") {
+				console.log("It was undefined");
+				url = null
+			}
+			
+			if (url != null && url != undefined) {
+				console.log("Reinitializing brickifier", url);
 				this.url = url;
 				this.brickifier.initialize('/proxy?url=' + url);
 			}
@@ -876,10 +884,6 @@ $(function() {
 			return url;
 		}
 		
-		this.before(function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);			
-		});
-		
 		this.get("/", function() {
 			this.redirect("#/");
 		});
@@ -894,10 +898,12 @@ $(function() {
 		});
 		
 		this.get("#/view/", function() {
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			
 			if (this.app.isoDirty == true) {
 				var self = this;
         setTimeout(function() { self.app.isoRenderer.render(); }, 0);
-        refreshPieces(app.brickifier)
+        setTimeout(function() { refreshPieces(self.app.brickifier); }, 0);
 				this.app.isoDirty = false;
 			}
 			
@@ -906,11 +912,15 @@ $(function() {
 		});
 		
 		this.get("#/edit/", function() {
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			
 			this.app.showView("#edit");
 			$('#view-link').attr("href", this.app.getUrlForAction("view"));
 		});
 		
 		this.get("#/inventory/", function() {
+			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			
 			this.app.showView("#inventory");
 		});
 	});
@@ -923,10 +933,12 @@ $(function() {
 
 	app.brickifier.bind('redraw', function() {
 		$('#view-link').attr("href", app.getUrlForAction("view"));
+		$('#download-link').attr("href", app.getUrlForAction("inventory"));
 		app.isoDirty = true;
 		
 		if (app.isoRendered == false) {
 				setTimeout(function() { app.isoRenderer.render(); }, 0);
+				setTimeout(function() { refreshPieces(app.brickifier); }, 0);
 				app.isoRendered = true;
 		}
   });  
