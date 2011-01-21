@@ -191,7 +191,6 @@ label
   &:hover
     background: #e9da2d
 
-
 /* View Area
 
 #view-area
@@ -243,7 +242,27 @@ ul.controls
     
     &:hover
       background: #ccc
-      
+
+/* Inventory
+
+#inventory
+  width: 400px
+  margin: 0 auto
+  
+  th, td
+    padding: 5px 10px
+    text-align: center
+  th
+    background-color: #f5f5f5
+    border-top: 1px solid #fff
+    border-right: 1px solid #fff
+    border-bottom: 1px solid #ccc
+    border-left: 1px solid #ccc
+    margin-bottom: 3px
+  
+  td
+    border-bottom: 1px solid #ccc
+
 /* Edit
 
 #edit
@@ -298,11 +317,11 @@ footer
   
   a#about-link
     display: block
+    float: left
     font:
       size: 14px
     width: 420px
     color: #333
-    margin: 0 auto
     
     strong.link
       color: #274a94
@@ -310,10 +329,15 @@ footer
     &:hover strong.link
       color: #3769ad
   
-  img
-    border: 1px solid #ccc
-    float: left
-    margin-right: 15px
+    img
+      border: 1px solid #ccc
+      float: left
+      margin-right: 15px
+      
+  #social
+    display: block
+    width: 300px
+    float: right
   
 #about
   
@@ -332,40 +356,40 @@ footer
       height: 338px
       margin-bottom: 15px
     
-    #vid_description
+  #vid_description
+  
+    h3
+      font-weight: bold
+      font-size: 1.5em
+      margin-bottom: 12px
     
-      h3
-        font-weight: bold
-        font-size: 1.2em
-        margin-bottom: 12px
-      
-      p
-        margin-bottom: 24px
+    p
+      margin-bottom: 24px
     
   
   #profiles
     float: left
-    width: 313px
-    height: 480px
+    width: 283px
+    height: 338px
 
     .person
       float: left
       background: #ddd
       width: 100%
-      margin-bottom: 20px
+      margin-bottom: 25px
 
       .picture
-        width: 64px
-        height: 64px
+        width: 48px
+        height: 48px
         float: left
         margin-right: 15px
       
       .info
         float: left
-        margin-top: 15px
+        margin-top: 5px
     
       .name
-        font-size: 1.2em
+        font-size: 1.05em
 
       .twitter
         font-weight: bold
