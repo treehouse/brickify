@@ -1,5 +1,15 @@
 %div#main
 
+  %ul#buttons
+    %li
+      %a#schematic-link{:href => "", :target => '_blank'}
+        %strong Download Schematic
+    %li
+      %a#download-link{:href=>'#'}
+        %strong Printable Inventory
+    %li
+      %a#edit-link
+        %strong Edit Brick Colors
 
   %div#form{:class=>"view"}
     
@@ -32,18 +42,7 @@
     
   %hr
   
-  %div#view{:class=>"view", :style=>"display: none;"}
-
-    %ul#buttons
-      %li
-        %a#schematic-link{:href => "", :target => '_blank'}
-          %strong Download Schematic
-      %li
-        %a#download-link{:href=>'#'}
-          %strong Printable Inventory
-      %li
-        %a#edit-link
-          %strong Edit Brick Colors      
+  %div#view{:class=>"view", :style=>"display: none;"}   
       
     #view-area
   

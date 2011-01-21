@@ -844,6 +844,13 @@ $(function() {
 		this.showView = function(view) {
 			$('.view').hide();
 			$(view).show();
+			
+			if (view == "#inventory" || view == "#view") {
+				$('#buttons').show();
+			}
+			else {
+				$('#buttons').hide();
+			}
 		};
 		
 		this.updateData = function(url, updates) {
