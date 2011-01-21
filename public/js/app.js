@@ -923,6 +923,10 @@ $(function() {
 			
 			this.app.showView("#inventory");
 		});
+		
+		this.get("#/about/", function() {
+			this.app.showView("#about");
+		});
 	});
 	
 	window.s = new Schematic("#schematic", app.brickifier)
