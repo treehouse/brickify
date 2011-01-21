@@ -928,6 +928,7 @@ $(function() {
 		this.get("#/inventory/", function() {
 			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
 			
+			$('#back').attr("href", this.app.getUrlForAction("view"));
 			this.app.showView("#inventory");
 		});
 		
