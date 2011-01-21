@@ -638,7 +638,6 @@
     },
 
     render: function(){
-      console.log("Schematic Render")
       var x=0; y=0, self = this;
 
       this.canvas.width = (CELL_WIDTH ) * this.colorGrid.length + PADDING;
@@ -660,7 +659,6 @@
       })
 
       $('#schematic-link').attr('href', this.canvas.toDataURL('image/png'));
-      console.log("End of schematic render")
     },
 
     drawPiece: function(xCell, yCell, piece){
@@ -854,15 +852,11 @@ $(function() {
 		};
 		
 		this.updateData = function(url, updates) {
-			console.log("URL", url);
-			
 			if (typeof url == "undefined") {
-				console.log("It was undefined");
 				url = null
 			}
 			
 			if (url != null && url != undefined) {
-				console.log("Reinitializing brickifier", url);
 				this.url = url;
 				this.brickifier.initialize('/proxy?url=' + url);
 			}
