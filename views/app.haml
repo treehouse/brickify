@@ -82,6 +82,7 @@
     #video
 
       #player
+        %iframe{:src => "http://player.vimeo.com/video/19018711?title=0&amp;byline=0&amp;portrait=0", :width => "600", :height => "338", :frameborder => "0"}
 
       #vid_description
 
@@ -159,9 +160,12 @@
   .clear
 
 %footer
-  %a{:href => "#/about/"}
+  %a#about-link{:href => "#/about/"}
     %img{:src => "/images/team.jpg"}
-    %p Brickify is an app created by Carsonified. It all started during a team building week at our new Orlando, Florida office. We took a fun trip to the local Lego store, and Jim thought it might be fun to build the Carsonified logo in Lego bricks.
+    %p
+      %strong Brickify
+      was created by the Carsonified Level Up team during a team building week in the Orlando office.
+      %strong.link Learn more about Brickify and the team &rarr;
   
 
 %canvas#schematic{:width=>"800", :height => '600'}
