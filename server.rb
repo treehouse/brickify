@@ -33,6 +33,7 @@ get '/proxy' do
   
   content_type = image_response.response['Content-Type']
   if ["image/png", "image/jpeg", "image/jpg", "image/gif"].include?(content_type) && image_response.body.length < 1000000
+    headers 'Cache-Control' => 'public, max-age 43200'
     response.headers['Content-Type'] = content_type  
     image_response.body
   end
