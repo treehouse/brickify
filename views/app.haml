@@ -1,28 +1,92 @@
 %div#main
 
+
+  %div#form{:class=>"view"}
+    
+    %div#sample
+      %h3 (This is bricked out awesome)
+      %img{:src=>'/images/sample.png'}
+    
+    %form#config{:action=>"#/view/", :method=>"get"}
+      %h2 Brickify turns your images into bricked out <em>awesome</em>.
+      %ul
+        %li
+          %label{:for => 'url'}
+            %strong Image URL
+          %ul
+            %li
+              %input#url{:type => 'text', :name => "url", :placeholder => "http://"}
+            %li
+              %a#upload{:href=>'http://imgur.com/'} Need to upload your photo? Use this service
+        -# %li
+          Slider
+          %ul
+            %li Less detail, fewer bricks
+            %li More detail, more bricks
+        %li
+          %input{:type => 'submit', :value => "Brickify!"}
+  
+  %hr
+  
+  %div#view{:class=>"view", :style=>"display: none;"}
+
+    %ul#buttons
+      %li
+        %a#schematic-link{:href => "", :target => '_blank'}
+          %strong Download Schematic
+      %li
+        %a#download-link{:href=>'#'}
+          %strong Printable Inventory
+      %li
+        %a#edit-link
+          %strong Edit Brick Colors      
+      
+    #view-area
+  
+      %canvas#iso{:width=>"800", :height => '600'}
+    
+      %ul.controls
+        %li
+          %a#fit{:href => "#"} Fit
+        %li
+          %a#full{:href => "#"} Zoom
+      
+      #iso_viewer.fit
+        %img#out
+
+  %hr
+  
+  %div#edit{:class=>"view", :style=>"display: none;"}
+    %h1 Brick Editor
+    %canvas#canvas{:width=>"800", :height => '600'}
+    %div{:id => "palette"}
+    %a#view-link Save and View
+
+  %hr
+  
   %div#about{:class => "view", :style => "display: none;"}
     %h2
       About
-    
+
     #video
-      
+
       #player
-    
+
       #vid_description
-      
+
         %h3 What is Brickify?
         %p Brickify is a web application that allows you to upload images and transform them into plans for building bricks.
-        
+
         %h3 Who built this and why?
         %p
           Brickify is an app created by Carsonified. It all started during a team building week at our new Orlando, Florida office. We took a fun trip to the local Lego store, and Jim thought it might be fun to build the Carsonified logo in Lego bricks.
         %p
           We searched the web, but we couldn't find any web apps that transformed images into lego plans, so we decided to build one ourselves.
-          
+
         %h3 How does Brickify work?
         %p I don't know... Alan, how does Brickify work?
-        
-    
+
+
     #profiles
 
       .person
@@ -68,7 +132,7 @@
             Developer
           %a{:href => "http://twitter.com/commondream", :class => "twitter"}
             @commondream
-     
+
       .person
         .picture
           %img{:src => "images/nick.jpg"}
@@ -79,75 +143,13 @@
             Designer
           %a{:href => "http://twitter.com/nickrp", :class => "twitter"}
             @nickrp
-            
 
-      
   
-  %div#form{:class=>"view"}
-    %h2 Brickify turns your images into bricked out <em>awesome</em>.
+  .clear
+
+%footer
+  -# %a{:href=>"#"} About
+  
+  
     
-    %div#sample
-      %h3 Sample
-      %img{:src=>'/images/sample.png'}
-    
-    %form#config{:action=>"#/view/", :method=>"get"}
-      %ul
-        %li
-          %label{:for => 'url'}
-          %strong Image URL
-          %ul
-            %li
-              %input#url{:type => 'text', :name => "url"}
-            %li
-              %a{:href=>'http://imgur.com/'} Need to upload your photo?
-        %li
-          Slider
-          %ul
-            %li Less detail, fewer bricks
-            %li More detail, more bricks
-        %li
-          %input{:type => 'submit', :value => "Brickify!"}
-  
-  %hr
-  
-  %div#view{:class=>"view", :style=>"display: none;"}
-
-    %ul#buttons
-      %li
-        %a#schematic-link{:href => "", :target => '_blank'}
-          %strong Download Schematic
-      %li
-        %a#download-link{:href=>'#'}
-          %strong Printable Inventory
-      %li
-        %a#edit-link
-          %strong Edit Brick Colors      
-      
-    #view-area
-  
-      %canvas#iso{:width=>"800", :height => '600'}
-    
-      %ul.controls
-        %li
-          %a#fit{:href => "#"} Fit
-        %li
-          %a#full{:href => "#"} Zoom
-      
-      #iso_viewer.fit
-        %img#out
-
-  %hr
-  
-  %div#edit{:class=>"view", :style=>"display: none;"}
-    %h1 Brick Editor
-    %canvas#canvas{:width=>"800", :height => '600'}
-    %div{:id => "palette"}
-    %a#view-link Save and View
-
-  %footer
-    %a{:href =>"#"} About
-    
-%a{:href => "#/"} Start Over
-
-
 %canvas#schematic{:width=>"800", :height => '600'}

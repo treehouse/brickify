@@ -20,6 +20,9 @@ a
 
 hr
   display: none
+
+.clear
+  clear: both
   
 #wrapper
   width: 960px
@@ -50,17 +53,23 @@ hr
 /* Form
 
 #form
-  padding: 10px 0
+  padding: 10px 10px
   
 #form h2
   font:
-    size: 36px
+    size: 38px
+  line-height: 1.2em
   text-align: center
   display: block
-  padding-bottom: 30px
+  padding-bottom: 20px
+  margin-bottom: 30px
+  text-shadow: 0px 0px 50px #ffffff
+  filter: dropshadow(color=#ffffff, offx=0, offy=0)
+  border-bottom: 1px dotted #bbb
   
 #sample
   float: right
+  text-align: center
   background: #fff
   border: 1px solid #bbb
   -webkit-box-shadow: inset 0px 0px 5px #bbb
@@ -73,17 +82,66 @@ hr
   font:
     size: 14px
     
+  h3
+    padding-bottom: 15px
+    
 #config
   float: left
-  width: 500px
+  width: 510px
   
+  input
+    font:
+      family: "Proxima Nova", arial, "sans-serif"
+      
+    &[type=submit]
+      font:
+        size: 28px
+      font-weight: bold
+      color: #fff
+      padding: 10px 40px
+      background: #e75f32
+      -webkit-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+      -moz-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+      box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+      border: 1px solid #d73527
+      text-shadow: -1px -2px 0 #d73527
+      display: block
+      margin: 25px auto 0 auto
 
+      &:hover
+        background: #ed6c33
+      
+      &:active
+        position: relative
+        top: 1px
+
+#url
+  font-size: 24px
+  padding: 5px 10px
+  border: 1px solid #bbb
+  width: 450px
+
+  &:focus
+    outline: none
+    -webkit-box-shadow: inset 0px 0px 5px #f5e447
+    -moz-box-shadow: inset 0px 0px 5px #f5e447
+    box-shadow: inset 0px 0px 5px #f5e447
+
+label
+  display: block
+  text-transform: uppercase
+  color: #666
+  margin-bottom: 5px
+  
+#upload
+  display: block
+  font-size: 14px
+  margin-top: 5px
 
 /* Edit and Download Buttons
 
 #buttons
   display: block
-  background: green
 
 #edit-link, #download-link, #schematic-link
   display:block
@@ -186,14 +244,53 @@ ul.controls
     &:hover
       background: #ccc
       
+/* Edit
+
+#edit
+  h1
+    display: none
+    
+#canvas
+  width: 100%
+  border: 1px solid #bbb
+  -webkit-box-shadow: inset 0px 0px 5px #bbb
+  -moz-box-shadow: inset 0px 0px 5px #bbb
+  box-shadow: inset 0px 0px 5px #bbb
+  
+#view-link
+  display:block
+  width: 100px
+  float: left
+  padding: 0
+  color: #fff
+  text-align: center
+  margin: 0 auto
+  background: #e75f32
+  -webkit-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  -moz-box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  box-shadow: -1px 1px 0px #d73527, -2px 2px 0px #d73527
+  border: 1px solid #d73527
+  text-shadow: -1px -1px 0 #d73527
+  margin-right: 40px
+  
+  &:hover
+    background: #ed6c33
+  
+
 /* Color palette selectors
 
+#palette
+  border: 1px solid #bbb
+  border-width: 0 1px 1px 1px
+  padding: 5px
+  overflow: auto
+  
 .color
   width: 40px
   height: 40px
-  border: 1px solid #000
-  float: left
+  border: 1px solid #aaa
   margin-right: 5px
+  float: left
   
 footer
   clear: both
