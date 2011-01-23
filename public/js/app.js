@@ -974,8 +974,8 @@ $(function() {
         total_brick_width += piece.length;
       });
 
-      var total_cm_height = total_brick_height * BRICK_WIDTH/10;
-      var total_cm_width  = total_brick_height * BRICK_HEIGHT/10;
+      var total_cm_height = total_brick_height * BRICK_HEIGHT/10;
+      var total_cm_width  = total_brick_width  * BRICK_WIDTH/10;
 
       $("#bricks_width").html(total_brick_width);
       $("#bricks_height").html(total_brick_height);
