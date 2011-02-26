@@ -968,6 +968,20 @@ $(function() {
   	    counts[name] ? counts[name]++ : counts[name] = 1;
   	  })
 
+      var total_brick_height = s.rows.length;
+      var total_brick_width = 0;
+      _.each(s.rows[0], function(piece){
+        total_brick_width += piece.length;
+      });
+
+      var total_cm_height = round(total_brick_height * BRICK_HEIGHT/10, 2);
+      var total_cm_width  = round(total_brick_width  * BRICK_WIDTH/10, 2);
+
+      $("#bricks_width").html(total_brick_width);
+      $("#bricks_height").html(total_brick_height);
+      $("#cm_width").html(total_cm_width);
+      $("#cm_height").html(total_cm_height);
+      $("#inventory .dimensions").show();
 
   	  _.each(counts, function(qty, key){
   	    var parts = key.split("-"), length = parts[1], color= parts[0];
@@ -1020,6 +1034,9 @@ $(function(){
 })
 
 
+function round(num, precision){
+  return Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision);
+}
 
 
 /**

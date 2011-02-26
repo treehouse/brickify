@@ -1,0 +1,13 @@
+Want to run Brickify locally on your machine? Here is quick and dirty 'how-to'
+------------------------------------------------------------------------------
+
+1) Clone the brickify git repository to a local directory of your preference
+2) Optional - If using RVM, create and use a brickify gemset
+3) If needed, install the bundler gem
+4) From your brickify directory, run 'bundle' to setup the brickify environment
+	4a) haml, rack, tilt, sinatra
+5) You should receive a 'Your bundle is complete' confirmation
+6) From your brickify directory, run 'rackup'
+	6a) This will kick-off the web services to allow brickify to run
+7) Launch a web browser and point the browser to localhost:9292
+8) Get your brickify on!
