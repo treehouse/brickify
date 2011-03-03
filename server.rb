@@ -4,22 +4,24 @@ require 'net/http'
 require 'net/https'
 
 get '/' do
+  headers 'Cache-Control' => 'public, max-age 43200'
   haml :app
 end
 
 get '/demo' do
+  headers 'Cache-Control' => 'public, max-age 43200'
   haml :demo
 end
 
 
 get '/css/:name.css' do |name|
-  #begin
+  begin
     headers 'Cache-Control' => 'public, max-age 43200'
     content_type 'text/css'
     sass :"sass/#{name}"
-  #rescue
+  rescue
     #halt 404
-  #end
+  end
 end
 
 get '/proxy' do
