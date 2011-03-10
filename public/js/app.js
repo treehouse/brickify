@@ -751,7 +751,14 @@
       }, 10)
 
     },
-    
+
+    randomSeed: 1,
+
+    pseudoRandom: function(randomSeed) {
+      this.randomSeed = (this.randomSeed*9301 + 49297) % 233280;
+      return this.randomSeed / 233280;
+    },
+
     getLongestBrick: function(xStart, y){
       var color = this.colorGrid[xStart][y].toString(), 
           x, i=0, bar=0;
@@ -765,6 +772,9 @@
           var part_availability_for_color_and_length = window.partNumbers[color_name + "-" + i];
           if(part_availability_for_color_and_length && part_availability_for_color_and_length[2] != "") {
             bar = i;
+            if(app.breakUpLongRuns && this.pseudoRandom() > 0.9) {
+              break;
+            }
           }
         }else{
           break;
@@ -979,6 +989,7 @@ $(function() {
 		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png', false, this.brickifier);
 		this.url = null;
 		this.drawing_scale = "large";
+		this.breakUpLongRuns = false;
 		this.isoDirty = false;
 		this.isoRendered = false;
 		
@@ -995,6 +1006,7 @@ $(function() {
 		};
 
 		this.processParams = function(params) {
+		  this.breakUpLongRuns = params["breakUpLongRuns"] == "true" ? true : false;
 			this.drawing_scale = params["scale"];
 			$("#original-url").html(params["url"]);
 			this.updateData(encodeURIComponent(params["url"]), params["updates"]);
@@ -1027,6 +1039,7 @@ $(function() {
 			if (this.url) {
 				url += "?url=" + this.url;
 				url += "&scale=" + this.drawing_scale;
+				url += "&breakUpLongRuns=" + this.breakUpLongRuns;
 
 				if (this.brickifier.updatedBlocks) {
 					url += "&updates=" + encodeURIComponent(this.brickifier.encodeUpdates());
@@ -1043,6 +1056,7 @@ $(function() {
 		this.get("#/", function() {
 			this.app.url = "";
 			this.app.drawing_scale = "large";
+			this.app.breakUpLongRuns = false;
 			this.app.isoDirty = true;
 			this.app.isoRendered = false;
 			this.app.brickifier.updatedBlcoks = null;
