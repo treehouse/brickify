@@ -20,7 +20,7 @@
     %form#config{:action=>"#/view/", :method=>"get"}
       %h2 Brickify turns your images into bricked out <em>awesome</em>.
       %ul
-        %li
+        %li.config_item
           %label{:for => 'url'}
             %strong Image URL
           %ul
@@ -28,11 +28,25 @@
               %input#url{:type => 'text', :name => "url", :placeholder => "http://"}
             %li
               %a#upload{:href=>'http://imgur.com/'} Need to upload your photo? Use this service
-        -# %li
-          Slider
+
+        %li.config_item
           %ul
-            %li Less detail, fewer bricks
-            %li More detail, more bricks
+            %li
+              Scale:
+            %li
+              %input{:type => "radio", :name => "scale", :value => "small"}
+                Small
+            %li
+              %input{:type => "radio", :name => "scale", :value => "medium"}
+                Medium
+            %li
+              %input{:type => "radio", :name => "scale", :value => "large", :checked => true}
+                Large
+
+        %li.config_item
+          %input{:type => "checkbox", :name => "breakUpLongRuns", :value => "true", :checked => false}
+            Break up long runs
+
         %li
           %input{:type => 'submit', :value => "Brickify!"}
     
@@ -79,9 +93,13 @@
       %thead
         %tr
           %th Color
-          %th Size
+          %th Part Number
+          %th Length
           %th Quantity
       %tbody
+    %p
+      Original URL:
+    %p#original-url
 
   
   %div#about{:class => "view", :style => "display: none;"}

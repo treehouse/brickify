@@ -88,11 +88,14 @@ hr
 #config
   float: left
   width: 510px
-  
+
+  li.config_item
+    margin: 12px auto 0 auto
+
   input
     font:
       family: "Proxima Nova", arial, "sans-serif"
-      
+
     &[type=submit]
       font:
         size: 28px
@@ -260,11 +263,14 @@ ul.controls
 #inventory-table
   width: 400px
   margin: 0 auto
+  margin-top: 20px
+  margin-bottom: 40px
   clear: both
   
   th, td
     padding: 5px 10px
     text-align: center
+    white-space: nowrap
   th
     background-color: #f5f5f5
     border-top: 1px solid #fff
@@ -275,6 +281,9 @@ ul.controls
   
   td
     border-bottom: 1px solid #ccc
+
+#original-url
+  color: #888
 
 /* Edit
 
