@@ -4,26 +4,153 @@
   window.BRICK_WIDTH = 8; //mm
   window.BRICK_HEIGHT = 9.6; //mm
   
-  window.BRICK_LENGTHS = [1, 2, 3, 4, 6, 8, 10];
-  
   window.namedColors = {
-    "White":      [255, 255 ,255],
-    "Red":        [188,6,2],
-    "Blue":       [36,98,175], 
-    "Yellow":     [243,194,3], 
-    "Dark Gray":  [50,50,50], 
-    "Green":      [45,160,85], 
-    "Brown":      [176,160,109], 
-    "Copper":     [213,127,40], 
-    "Light Blue": [116,149,200], 
-    "Gray":       [101,101,101],
-    "Brown":      [84,42,20], 
-    "Light Gray": [146,146,146], 
-    "Lime":       [154,186,61], 
-    "Navy":       [37,62,102], 
-    "Fuschia":    [215,53,156]
+    "White":      [255, 255 ,255],   //
+    "Red":        [188,6,2],         //
+    "Blue":       [36,98,175],       //
+    "Yellow":     [243,194,3],       //
+    "Black":      [50,50,50],        //
+    "Green":      [45,160,85],       //
+    "Light Brown":[176,160,109],     // Brick yellow
+    "Copper":     [213,127,40],      // Orange-Brown
+    "Light Blue": [116,149,200],     //
+    "Gray":       [101,101,101],     //
+    "Brown":      [84,42,20],        // Redish Brown
+    "Light Gray": [146,146,146],     //
+    "Lime":       [154,186,61],      // Bright Yellowish
+    "Navy":       [37,62,102],       // Earth Blue
+    "Fuschia":    [215,53,156]       // Bright purple
   }
-  
+
+  window.partNumbers = {
+
+    // Bright purple
+    "Fuschia-1": { 1: "4492224", 2: "4492224" },
+    "Fuschia-2": { 1: "",        2: "4517992" },
+    "Fuschia-3": { 1: "",        2: ""        },
+    "Fuschia-4": { 1: "",        2: ""        },
+    "Fuschia-6": { 1: "",        2: ""        },
+    "Fuschia-8": { 1: "",        2: ""        },
+
+    // Earth Blue
+    "Navy-1": { 1: "4255413", 2: "4249891" },
+    "Navy-2": { 1: "4249891", 2: "4296785" },
+    "Navy-3": { 1: "",        2: ""        },
+    "Navy-4": { 1: "",        2: "4530029" },
+    "Navy-6": { 1: "",        2: ""        },
+    "Navy-8": { 1: "",        2: ""        },
+
+    // Bright Yellowish
+    "Lime-1": { 1: "420634",  2: "4164022" },
+    "Lime-2": { 1: "4164022", 2: "4220632" },
+    "Lime-3": { 1: "4160093", 2: "4220631" },
+    "Lime-4": { 1: "4234716", 2: "4165967" },
+    "Lime-6": { 1: "4537919", 2: ""        },
+    "Lime-8": { 1: "",        2: ""        },
+
+    // Redish Brown
+    "Brown-1": { 1: "4211242", 2: "4211149"  },
+    "Brown-2": { 1: "4211149", 2: "4211210"  },
+    "Brown-3": { 1: "4211220", 2: "4216668"  },
+    "Brown-4": { 1: "4211225", 2: "4211201"  },
+    "Brown-6": { 1: "4211193", 2: "4216615"  },
+    "Brown-8": { 1: "4263776", 2: ""         },
+
+    // Orange-Brown
+    "Copper-1": { 1: "4173805", 2: "4121739" },
+    "Copper-2": { 1: "4121739", 2: "4153825" },
+    "Copper-3": { 1: "4118787", 2: "4153826" },
+    "Copper-4": { 1: "4118827", 2: "4153827" },
+    "Copper-6": { 1: "4189007", 2: ""        },
+    "Copper-8": { 1: "",        2: ""        },
+
+    // Brick yellow
+    "Light Brown-1":  { 1: "4113915", 2: "4109995" },
+    "Light Brown-2":  { 1: "4109995", 2: "4114306" },
+    "Light Brown-3":  { 1: "4162465", 2: "4159739" },
+    "Light Brown-4":  { 1: "4113916", 2: "4114319" },
+    "Light Brown-6":  { 1: "4112982", 2: "4181134" },
+    "Light Brown-8":  { 1: "4159774", 2: "4141533" },
+
+    // White
+    "White-1":  { 1: "300501", 2: "300401"  },
+    "White-2":  { 1: "300401", 2: "300301"  },
+    "White-3":  { 1: "362201", 2: "300201"  },
+    "White-4":  { 1: "301001", 2: "300101"  },
+    "White-6":  { 1: "300901", 2: "4181142" },
+    "White-8":  { 1: "300823", 2: "300701"  },
+    "White-10": { 1: "611101", 2: "300601"  },
+
+    // Black
+    "Black-1":  { 1: "300526", 2: "300426"  },
+    "Black-2":  { 1: "300426", 2: "300326"  },
+    "Black-3":  { 1: "36226",  2: "300226"  },
+    "Black-4":  { 1: "301026", 2: "300126"  },
+    "Black-6":  { 1: "300926", 2: "4181144" },
+    "Black-8":  { 1: "300826", 2: "300726"  },
+    "Black-10": { 1: "611126", 2: "4617860" },
+
+    // Dark Stone Grey
+    "Gray-1":  { 1: "4211098", 2: "4211088" },
+    "Gray-2":  { 1: "4211088", 2: "4211060" },
+    "Gray-3":  { 1: "4211104", 2: "4211105" },
+    "Gray-4":  { 1: "4211103", 2: "4211085" },
+    "Gray-6":  { 1: "4211100", 2: "4210875" },
+    "Gray-8":  { 1: "4211099", 2: ""        },
+    "Gray-10": { 1: "4211107", 2: ""        },
+
+    // Medium Stone Grey
+    "Light Gray-1":  { 1: "4211389", 2: "4211388" },
+    "Light Gray-2":  { 1: "4211388", 2: "4211387" },
+    "Light Gray-3":  { 1: "4211428", 2: "4211386" },
+    "Light Gray-4":  { 1: "4211394", 2: "4211385" },
+    "Light Gray-6":  { 1: "4211393", 2: "4211795" },
+    "Light Gray-8":  { 1: "4211392", 2: ""        },
+    "Light Gray-10": { 1: "4211521", 2: ""        },
+
+    // Red
+    "Red-1":  { 1: "300521", 2: "300421"  },
+    "Red-2":  { 1: "300421", 2: "300321"  },
+    "Red-3":  { 1: "362221", 2: "300221"  },
+    "Red-4":  { 1: "301021", 2: "300121"  },
+    "Red-6":  { 1: "300921", 2: "4181138" },
+    "Red-8":  { 1: "300821", 2: "300721"  },
+    "Red-10": { 1: "611121", 2: "4617857" },
+
+    // Blue
+    "Blue-1": { 1: "300523", 2: "300423"  },
+    "Blue-2": { 1: "300423", 2: "300323"  },
+    "Blue-3": { 1: "362223", 2: "300223"  },
+    "Blue-4": { 1: "301023", 2: "300123"  },
+    "Blue-6": { 1: "300923", 2: "4181139" },
+    "Blue-8": { 1: "300823", 2: "300723"  },
+
+    // Light Blue
+    "Light Blue-1": { 1: "4179830", 2: "4179833" },
+    "Light Blue-2": { 1: "4179833", 2: "4201235" },
+    "Light Blue-3": { 1: "",        2: ""        },
+    "Light Blue-4": { 1: "4163696", 2: "4205058" },
+    "Light Blue-6": { 1: "",        2: ""        },
+    "Light Blue-8": { 1: "",        2: ""        },
+
+    // Yellow
+    "Yellow-1":  { 1: "300524",  2: "300424"  },
+    "Yellow-2":  { 1: "300424",  2: "300324"  },
+    "Yellow-3":  { 1: "362224",  2: "300224"  },
+    "Yellow-4":  { 1: "301024",  2: "300124"  },
+    "Yellow-6":  { 1: "300924",  2: "4181143" },
+    "Yellow-8":  { 1: "300824",  2: "300724"  },
+    "Yellow-10": { 1: "4200026", 2: ""        },
+
+    // Green
+    "Green-1": { 1: "300528", 2: "4107736"  },
+    "Green-2": { 1: "4107736", 2: "300328"  },
+    "Green-3": { 1: "4109679", 2: "4109674" },
+    "Green-4": { 1: "4112838", 2: "4106356" },
+    "Green-6": { 1: "4111844", 2: "4181135" },
+    "Green-8": { 1: "4143953", 2: ""        },
+  }
+
   window.colorNameLookup = {};
   for(var name in namedColors) colorNameLookup[namedColors[name].toString()] = name;
   
@@ -62,8 +189,6 @@
 			}
 		});
 		
-    this.final_width = 1000; //mm
-  
     this.getBrickColor = this.getBrickColorAverage;  
     this.getBrickColor = this.getBrickColorNearestNeighbor;
     this.getBrickColor = this.getBrickColorSample5;
@@ -95,6 +220,14 @@
     
     calculateDimensions: function(){
       var prop = this.img.height / this.img.width;
+
+      this.final_width = 1000;
+      if(app.drawing_scale == "medium" ) {
+        this.final_width = 750;
+      }
+      if(app.drawing_scale == "small" ) {
+        this.final_width = 500;
+      }
 
       // Scale height to fit proportions.
       this.canvas.height = Math.floor(this.canvas.width * prop);
@@ -623,17 +756,26 @@
       var color = this.colorGrid[xStart][y].toString(), 
           x, i=0, bar=0;
       
+      var color_name = colorNameLookup[color];
+
       for(x = xStart; x < this.colorGrid.length ;x++){
-        if(this.colorGrid[x][y].toString() == color){
+        var grid_color = this.colorGrid[x][y].toString();
+        if(grid_color == color){
           i++;
-          if(BRICK_LENGTHS.indexOf(i) >= 0){
+          var part_availability_for_color_and_length = window.partNumbers[color_name + "-" + i];
+          if(part_availability_for_color_and_length && part_availability_for_color_and_length[2] != "") {
             bar = i;
           }
         }else{
           break;
         }
       }
-		      return new Piece(colorNameLookup[color], bar);
+      if (bar == 0) {
+        console.log("Ooooops, needed a brick, but found none, inserting a white brick");
+        color_name = "White";
+        bar = 1;
+      }
+      return new Piece(color_name, bar);
 
     },
 
@@ -836,6 +978,7 @@ $(function() {
 		this.brickifier = new Brickifier("#canvas");
 		this.isoRenderer = new IsoRenderer('#iso', '/images/bricks.png', false, this.brickifier);
 		this.url = null;
+		this.drawing_scale = "large";
 		this.isoDirty = false;
 		this.isoRendered = false;
 		
@@ -850,7 +993,14 @@ $(function() {
 				$('#buttons').hide();
 			}
 		};
-		
+
+		this.processParams = function(params) {
+			this.drawing_scale = params["scale"];
+			$("#original-url").html(params["url"]);
+			this.updateData(encodeURIComponent(params["url"]), params["updates"]);
+		}
+
+
 		this.updateData = function(url, updates) {
 			if (typeof url == "undefined") {
 				url = null
@@ -876,7 +1026,8 @@ $(function() {
 			
 			if (this.url) {
 				url += "?url=" + this.url;
-				
+				url += "&scale=" + this.drawing_scale;
+
 				if (this.brickifier.updatedBlocks) {
 					url += "&updates=" + encodeURIComponent(this.brickifier.encodeUpdates());
 				}
@@ -891,6 +1042,7 @@ $(function() {
 		
 		this.get("#/", function() {
 			this.app.url = "";
+			this.app.drawing_scale = "large";
 			this.app.isoDirty = true;
 			this.app.isoRendered = false;
 			this.app.brickifier.updatedBlcoks = null;
@@ -899,8 +1051,7 @@ $(function() {
 		});
 		
 		this.get("#/view/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
-			
+			this.app.processParams(this.params);
 			if (this.app.isoDirty == true) {
 				var self = this;
         setTimeout(function() { self.app.isoRenderer.render(); }, 0);
@@ -913,17 +1064,19 @@ $(function() {
 		});
 		
 		this.get("#/edit/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			this.app.processParams(this.params);
 			
 			this.app.showView("#edit");
 			$('#view-link').attr("href", this.app.getUrlForAction("view"));
 		});
 		
 		this.get("#/inventory/", function() {
-			this.app.updateData(encodeURIComponent(this.params["url"]), this.params["updates"]);
+			this.app.processParams(this.params);
 			
 			$('#back').attr("href", this.app.getUrlForAction("view"));
+			$('#edit-link').attr("href", this.app.getUrlForAction("edit"));
 			this.app.showView("#inventory");
+
 		});
 		
 		this.get("#/about/", function() {
@@ -963,7 +1116,7 @@ $(function() {
   	      
   	      
   	      
-  	  _.each(pieces, function(p){
+  	  _.each(pieces.sort(), function(p){
   	    var name = p.toString();
   	    counts[name] ? counts[name]++ : counts[name] = 1;
   	  })
@@ -983,10 +1136,22 @@ $(function() {
       $("#cm_height").html(total_cm_height);
       $("#inventory .dimensions").show();
 
+      var total_brick_count = 0;
   	  _.each(counts, function(qty, key){
   	    var parts = key.split("-"), length = parts[1], color= parts[0];
-  	    $('<tr><td>'+color+'</td><td>1 x '+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
+
+  	    var part_number_details = window.partNumbers[key];
+  	    if (part_number_details)
+  	    {
+          // var part_number_1 = part_number_details[1];
+    	    var part_number_2 = part_number_details[2];
+  	    }
+
+        total_brick_count += qty;
+  	    $('<tr><td>' + color + '</td><td>' + part_number_2 + '</td><td>'+length+'</td><td>'+qty+'</td></tr>').addClass(key.replace(/ /g, '') + ' set').appendTo($inv);
   	  })
+
+  	  $('<tr><td></td><td></td><td>Total:</td><td>'+total_brick_count+'</td></tr>').appendTo($inv);
 
 
 	}
